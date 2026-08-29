@@ -1,12 +1,8 @@
 # KCD2 Interactive Map
 
-An interactive web map for **Kingdom Come: Deliverance II**, covering both the Trosky and Kuttenberg regions. Built with [Leaflet.js](https://leafletjs.com/).
+An interactive web map for **Kingdom Come: Deliverance II** in czech, covering both the Trosky and Kuttenberg regions. Built with [Leaflet.js](https://leafletjs.com/).
 
-Track your progress, find merchants, locate quest objectives, and discover hidden points of interest across Bohemia.
-
-> 🌐 **Live site:** [https://quangdao215.github.io/kcd2_interactive_map/](https://quangdao215.github.io/kcd2_interactive_map/)
-
-![Screenshot placeholder](docs/screenshot.png)
+** It`s not still done.
 
 ---
 
@@ -22,20 +18,6 @@ Track your progress, find merchants, locate quest objectives, and discover hidde
 - **Search and filter** — Find markers by name; toggle entire category groups on or off
 - **Shareable URLs** — The URL hash updates as you pan and zoom, so you can link directly to a specific spot
 - **Tile-based rendering** — Maps load fast and stay smooth even at full zoom
-
----
-
-## How to Use
-
-Just open the live site. No login, no account, no tracking. Everything is stored locally in your browser.
-
-- **Pan** — Click and drag
-- **Zoom** — Scroll wheel, pinch, or the +/− controls
-- **Add a marker** — Right-click anywhere on the map
-- **Toggle categories** — Use the sidebar toggle switches (or Show All / Hide All)
-- **Track progress** — Click any marker, then click "Mark as Discovered" or "Mark as Collected"
-- **Switch regions** — Use the Trosky / Kuttenberg segmented control at the top of the sidebar
-- **Backup your data** — Tools tab → Export All Data (one file: markers, progress, label positions & filters)
 
 ---
 
@@ -82,24 +64,3 @@ kcd2_interactive_map/
 - **Built with** [Leaflet.js](https://leafletjs.com/).
 
 ---
-
-## Contributing
-
-Spotted a missing marker, wrong location, or bug? Open an [issue](https://github.com/QuangDao215/kcd2_interactive_map/issues) or send a pull request.
-
-Especially welcome:
-- Missing markers (with coordinates if possible)
-- Better English names for locations
-- Bug reports with steps to reproduce
-
----
-
-## License
-
-The **code** in this repository is released under the [MIT License](LICENSE).
-
-All **game assets** (icons, map imagery, location names, etc.) belong to Warhorse Studios and are included under fair-use principles for a non-commercial fan project. If you're from Warhorse and would like anything removed, please open an issue.
-
----
-
-*This is a fan-made project. Kingdom Come: Deliverance II is © Warhorse Studios.*
