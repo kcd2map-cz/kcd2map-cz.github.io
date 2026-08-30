@@ -60,12 +60,57 @@
     background: var(--bg-panel);
     border-right: 1px solid var(--border);
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     z-index: 1000;
     transition: margin-left 0.3s ease;
   }
   #sidebar.collapsed { margin-left: -300px; }
 
+  /* ── Vertical icon rail (toggle Markers / Informace) ── */
+  #side-rail {
+    width: 38px;
+    min-width: 38px;
+    flex-shrink: 0;
+    height: 100%;
+    background: var(--bg-dark);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 6px 0;
+    gap: 4px;
+  }
+  .rail-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    background: transparent;
+    border: none;
+    border-left: 3px solid transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .rail-btn:hover { color: var(--text-secondary); background: var(--bg-hover); }
+  .rail-btn.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: var(--bg-active);
+  }
+
+  /* ── Side panels (Markers / Informace) ── */
+  .side-panel {
+    display: none;
+    flex: 1;
+    min-width: 0;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .side-panel.active { display: flex; }
+  .side-scroll { flex: 1; overflow-y: auto; }
+
+  /* Branded header shown at the top of every sidebar panel */
   .sidebar-header {
     padding: 16px 18px 14px;
     border-bottom: 1px solid var(--border);
@@ -217,38 +262,16 @@
     font-family: var(--font-mono); font-size: 10.5px; color: var(--text-muted);
     margin-top: 5px; text-align: right; letter-spacing: -0.01em;
   }
-  /* Per-region breakdown (enlarged names; lives inside the collapsible card body) */
-  .game-progress .gp-regions { margin-top: 8px; display: flex; flex-direction: column; gap: 5px; }
-  .game-progress .gp-region { display: flex; align-items: center; gap: 8px; }
-  .game-progress .gpr-name { font-size: 12.5px; color: var(--text-secondary); width: 80px; flex-shrink: 0; }
+  /* Per-region breakdown: region name + main/side quest counters with their icons
+     (lives inside the collapsible card body) */
+  .game-progress .gp-regions { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+  .game-progress .gp-region { display: flex; align-items: center; gap: 10px; }
+  .game-progress .gpr-name { font-size: 12.5px; color: var(--text-secondary); width: 76px; flex-shrink: 0; }
   .game-progress .gp-region.active .gpr-name { color: var(--accent); font-weight: 600; }
-  .game-progress .gpr-bar { flex: 1; height: 5px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
-  .game-progress .gpr-fill { display: block; height: 100%; width: 0%; background: var(--accent-dim); border-radius: 3px; transition: width 0.4s ease; }
-  .game-progress .gp-region.active .gpr-fill { background: var(--accent); }
-  .game-progress .gpr-pct { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); width: 34px; text-align: right; flex-shrink: 0; letter-spacing: -0.02em; }
-
-  /* ── Sidebar Tabs ── */
-  .sidebar-tabs {
-    display: flex;
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-  .sidebar-tab {
-    display: flex; align-items: center; justify-content: center; gap: 5px;
-    flex: 1;
-    padding: 10px 6px;
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid transparent;
-    color: var(--text-muted);
-    font-size: 11px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    white-space: nowrap;
-  }
+  .game-progress .gpr-quest { display: inline-flex; align-items: center; gap: 5px; }
+  .game-progress .gpr-icon { width: 18px; height: 18px; object-fit: contain; flex-shrink: 0; }
+  .game-progress .gpr-count { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-secondary); letter-spacing: -0.02em; white-space: nowrap; }
+  .game-progress .gp-region.active .gpr-count { color: var(--accent); }
 
   /* Keyboard focus rings (only show for keyboard users, not mouse clicks) */
   button:focus-visible,
@@ -261,15 +284,6 @@
     outline-offset: 1px;
     border-radius: 3px;
   }
-  .sidebar-tab:hover { color: var(--text-secondary); }
-  .sidebar-tab.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
-
-  /* ── Tab Content ── */
-  .tab-content { display: none; flex: 1; overflow-y: auto; }
-  .tab-content.active { display: flex; flex-direction: column; }
 
   /* ── Category List ── */
   .category-controls {
@@ -449,10 +463,9 @@
   .search-result-item .sr-cat { color: var(--text-muted); font-size: 11px; }
   .cat-progress { font-size: 11px; color: var(--text-secondary); margin-left: auto; margin-right: 4px; white-space: nowrap; }
   .cat-progress .done { color: var(--success); }
-  .group-progress { font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-left: 4px; }
 
   /* ── My Markers Tab ── */
-  .my-markers-list { padding: 8px 12px; flex: 1; overflow-y: auto; }
+  .my-markers-list { padding: 8px 12px; }
   .my-marker-item {
     display: flex;
     align-items: center;

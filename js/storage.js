@@ -90,39 +90,57 @@ function isMarkerDiscovered(markerData) {
   return set ? set.has(getMarkerKey(markerData)) : false;
 }
 
-// Whole-game completion = discovered / total across BOTH regions over all
-// PROGRESS_CATEGORIES (quests + collectibles), including custom markers.
+// Categories that drive Game Completion. Only quests count. Main quests make up
+// the tracked total behind the big % bar; every other quest category (side quests,
+// tasks, DLC stories) is just tallied per region so it can be listed next to it.
+const MAIN_QUEST_CATEGORIES = new Set(['quest_main']);
+const SIDE_QUEST_CATEGORIES = new Set([
+  'quest_side', 'quest_task',
+  'quest_dlc0', 'quest_dlc1', 'quest_dlc2', 'quest_dlc3',
+]);
+
+// Game completion = quest progress across BOTH regions (including custom markers).
+// Marking a quest as Discovered/Collected ticks it here.
 function computeGameProgress() {
-  let total = 0, done = 0;
+  let mainTotal = 0, mainDone = 0;
   const regions = {};
   ['trosky', 'kuttenberg'].forEach(region => {
     const set = discoveredMarkers[region] || new Set();
     const markers = [...getEditedMarkers(region), ...(userMarkers[region] || [])];
-    let rTotal = 0, rDone = 0;
+    let rMainTotal = 0, rMainDone = 0, rSideTotal = 0, rSideDone = 0;
     markers.forEach(m => {
-      if (!PROGRESS_CATEGORIES.has(m.category)) return;
-      rTotal++;
-      if (set.has(getMarkerKey(m))) rDone++;
+      if (MAIN_QUEST_CATEGORIES.has(m.category)) {
+        rMainTotal++;
+        if (set.has(getMarkerKey(m))) rMainDone++;
+      } else if (SIDE_QUEST_CATEGORIES.has(m.category)) {
+        rSideTotal++;
+        if (set.has(getMarkerKey(m))) rSideDone++;
+      }
     });
-    regions[region] = { total: rTotal, done: rDone, pct: rTotal ? Math.round(rDone / rTotal * 100) : 0 };
-    total += rTotal; done += rDone;
+    regions[region] = {
+      mainTotal: rMainTotal, mainDone: rMainDone,
+      sideTotal: rSideTotal, sideDone: rSideDone,
+    };
+    mainTotal += rMainTotal; mainDone += rMainDone;
   });
-  return { total, done, pct: total ? Math.round(done / total * 100) : 0, regions };
+  return { mainTotal, mainDone, pct: mainTotal ? Math.round(mainDone / mainTotal * 100) : 0, regions };
 }
 function updateGameProgress() {
   const fill = document.getElementById('gp-fill');
   if (!fill) return;
   const p = computeGameProgress();
   fill.style.width = p.pct + '%';
-  document.getElementById('gp-pct').textContent = p.pct + '%';
-  document.getElementById('gp-detail').textContent = `${p.done.toLocaleString()} / ${p.total.toLocaleString()} found`;
+  const pctEl = document.getElementById('gp-pct');
+  if (pctEl) pctEl.textContent = p.pct + '%';
+  const detail = document.getElementById('gp-detail');
+  if (detail) detail.textContent = `${p.mainDone.toLocaleString()} / ${p.mainTotal.toLocaleString()} main quests`;
   ['trosky', 'kuttenberg'].forEach(region => {
-    const rf = document.getElementById('gp-' + region + '-fill');
-    const rp = document.getElementById('gp-' + region + '-pct');
     const row = document.getElementById('gp-' + region + '-row');
-    if (rf) rf.style.width = p.regions[region].pct + '%';
-    if (rp) rp.textContent = p.regions[region].pct + '%';
     if (row) row.classList.toggle('active', region === currentRegion);
+    const mainEl = document.getElementById('gp-' + region + '-main');
+    if (mainEl) mainEl.textContent = `${p.regions[region].mainDone}/${p.regions[region].mainTotal}`;
+    const sideEl = document.getElementById('gp-' + region + '-side');
+    if (sideEl) sideEl.textContent = `${p.regions[region].sideDone}/${p.regions[region].sideTotal}`;
   });
 }
 

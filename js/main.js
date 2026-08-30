@@ -27,15 +27,17 @@ function toggleHighlight() {
   document.body.classList.toggle('highlight-markers', on);
 }
 
-function switchTab(tabName) {
-  document.querySelectorAll('.sidebar-tab').forEach(t => {
-    const on = t.dataset.tab === tabName;
-    t.classList.toggle('active', on);
-    t.setAttribute('aria-selected', on ? 'true' : 'false');
+function switchSide(side) {
+  const panel = document.getElementById(`side-panel-${side}`);
+  if (!panel) return;   // unknown side (e.g. old saved 'info' tab) — keep current
+  document.querySelectorAll('.rail-btn').forEach(b => {
+    const on = b.id === `rail-${side}`;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-selected', on ? 'true' : 'false');
   });
-  document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-  document.getElementById(`tab-${tabName}`).classList.add('active');
-  try { localStorage.setItem(CONFIG.storageKeys.activeTab, tabName); } catch (e) { /* private mode */ }
+  document.querySelectorAll('.side-panel').forEach(p => p.classList.remove('active'));
+  panel.classList.add('active');
+  try { localStorage.setItem(CONFIG.storageKeys.activeTab, side); } catch (e) { /* private mode */ }
 }
 
 function showToast(message) {

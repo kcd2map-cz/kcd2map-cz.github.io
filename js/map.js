@@ -77,10 +77,12 @@ async function init() {
   // Restore from URL hash if present
   restoreFromHash();
 
-  // Restore the last-open sidebar tab, then surface the one-time right-click hint.
+  // Restore the last-open sidebar side (markers / mymarkers / tools / info), then surface
+  // the one-time right-click hint. Unknown values (e.g. from a pre-rail layout) are
+  // ignored by switchSide.
   let savedTab = null;
   try { savedTab = localStorage.getItem(CONFIG.storageKeys.activeTab); } catch (e) { /* ignore */ }
-  if (savedTab) switchTab(savedTab);
+  if (savedTab) switchSide(savedTab);
   maybeShowMapHint();
   scheduleIntroDismiss(_introStart);
 }

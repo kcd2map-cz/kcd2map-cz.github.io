@@ -65,22 +65,13 @@ function renderCategoryList(filter = '') {
 function renderCategoryGroupHtml(groupName, cats, counts, expanded, toggleAllAttr) {
   const iconMap = window.ICON_MAP || {};
   const cnt = id => counts[id] || { total: 0, discovered: 0 };
-  const total = cats.reduce((s, c) => s + cnt(c.id).total, 0);
-  const progressCats = cats.filter(c => PROGRESS_CATEGORIES.has(c.id));
-  const progressTotal = progressCats.reduce((s, c) => s + cnt(c.id).total, 0);
-  const discovered = progressCats.reduce((s, c) => s + cnt(c.id).discovered, 0);
   const activeCount = cats.filter(c => activeCategories.has(c.id)).length;
-  const pct = progressTotal > 0 ? Math.round(discovered / progressTotal * 100) : 0;
   const cls = expanded ? 'expanded' : '';
-  const progressHtml = progressTotal > 0
-    ? `<span class="group-progress">${discovered}/${progressTotal} (${pct}%)</span>`
-    : `<span class="group-progress">${total}</span>`;
 
   let html = `<div class="cat-group">`;
   html += `<div class="cat-group-header ${cls}" tabindex="0" role="button" aria-expanded="${expanded}" onclick="toggleGroup('${groupName}')">`;
   html += `  <span class="group-arrow">▶</span>`;
   html += `  <span class="group-name">${groupName}</span>`;
-  html += `  ${progressHtml}`;
   html += `  <button class="group-toggle-all switch${activeCount === cats.length ? ' on' : ''}" aria-label="Toggle all ${groupName}" onclick="event.stopPropagation();${toggleAllAttr(activeCount < cats.length)}"></button>`;
   html += `</div>`;
   html += `<div class="cat-group-children ${cls}">`;

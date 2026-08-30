@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KCD2 Interactive Map — Kingdom Come: Deliverance II</title>
-<link rel="icon" type="image/jpeg" href="icons/brand/kcd2_icon.jpg?v=2026-07-17-1858">
+<link rel="icon" type="image/jpeg" href="icons/brand/kcd2_icon.jpg?v=2026-09-02">
 <meta name="description" content="Interactive map for Kingdom Come: Deliverance II — POIs, loot, quests, NPCs and personal progress tracking across the Trosky and Kuttenberg regions.">
 <meta name="theme-color" content="#1a1714">
 <meta property="og:type" content="website">
@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="KCD2 Interactive Map">
 <meta name="twitter:description" content="Interactive POI/loot/quest map for Kingdom Come: Deliverance II with progress tracking.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
-<link rel="stylesheet" href="style.css?v=2026-07-17-1858">
+<link rel="stylesheet" href="style.css?v=2026-09-02">
 </head>
 <body>
 
@@ -33,197 +33,236 @@
 
 <!-- Sidebar -->
 <div id="sidebar">
-  <div class="sidebar-header">
-    <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-07-17-1858" alt="Kingdom Come: Deliverance II">
-    <div class="sb-tagline">Interactive Map</div>
+  <!-- Vertical icon rail — toggles between Markers, My Markers and Tools -->
+  <div id="side-rail" role="tablist" aria-label="Sidebar sections" aria-orientation="vertical">
+    <button class="rail-btn active" id="rail-markers" role="tab" aria-selected="true" onclick="switchSide('markers')" title="Markers" aria-label="Markers">
+      <svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    </button>
+    <button class="rail-btn" id="rail-info" role="tab" aria-selected="false" onclick="switchSide('info')" title="Info" aria-label="Info">
+      <svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+    </button>
+    <button class="rail-btn" id="rail-mymarkers" role="tab" aria-selected="false" onclick="switchSide('mymarkers')" title="My Markers" aria-label="My Markers">
+      <svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    </button>
+    <button class="rail-btn" id="rail-tools" role="tab" aria-selected="false" onclick="switchSide('tools')" title="Tools" aria-label="Tools">
+      <svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+    </button>
   </div>
 
-  <!-- Region Switcher — sliding segmented control -->
-  <div class="region-section">
-    <div class="region-eyebrow">Region</div>
-    <div class="region-switcher" role="group" aria-label="Map region">
-      <button class="region-btn active" data-region="trosky" aria-pressed="true" onclick="switchRegion('trosky')">Trosky</button>
-      <button class="region-btn" data-region="kuttenberg" aria-pressed="false" onclick="switchRegion('kuttenberg')">Kuttenberg</button>
+  <!-- ══ MARKERS PANEL (default view) ══ -->
+  <div class="side-panel active" id="side-panel-markers">
+    <div class="sidebar-header">
+      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-02" alt="Kingdom Come: Deliverance II">
+      <div class="sb-tagline">Interactive Map</div>
+    </div>
+
+    <!-- Region Switcher — sliding segmented control -->
+    <div class="region-section">
+      <div class="region-eyebrow">Region</div>
+      <div class="region-switcher" role="group" aria-label="Map region">
+        <button class="region-btn active" data-region="trosky" aria-pressed="true" onclick="switchRegion('trosky')">Trosky</button>
+        <button class="region-btn" data-region="kuttenberg" aria-pressed="false" onclick="switchRegion('kuttenberg')">Kuttenberg</button>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-box">
+      <div class="search-field">
+        <svg class="search-icon ui-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" class="search-input" id="search-input" role="combobox" aria-label="Search markers by name" aria-controls="search-results" aria-autocomplete="list" aria-expanded="false" placeholder="Search markers by name..." oninput="onSearchInput(this.value)" onfocus="onSearchInput(this.value)">
+        <button type="button" class="search-clear" id="search-clear" aria-label="Clear search" hidden onclick="clearSearch()">
+          <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="search-results" id="search-results" role="listbox" aria-label="Search results"></div>
+
+    <!-- Markers (categories) -->
+    <div class="side-scroll">
+      <div class="category-controls">
+        <button class="cat-ctrl-btn" onclick="toggleAllCategories(true)">
+          <svg class="ui-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>Show All</span>
+        </button>
+        <button class="cat-ctrl-btn" onclick="toggleAllCategories(false)">
+          <svg class="ui-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 002.8 2.8"/><path d="M9.4 5.4A9.7 9.7 0 0112 5c5 0 8.5 4 9.5 7-.4 1.2-1.2 2.6-2.4 3.8"/><path d="M6.5 6.6C4.3 8 2.9 10 2.5 12c1 3 4.5 7 9.5 7 1 0 2-.2 2.9-.5"/></svg>
+          <span>Hide All</span>
+        </button>
+      </div>
+      <div class="category-list" id="category-list"></div>
     </div>
   </div>
 
-  <!-- Overall Game Completion -->
-  <div class="game-progress" id="game-progress" title="Quests + collectibles discovered across both regions">
-    <button type="button" class="gp-header" aria-expanded="true" aria-controls="gp-body" onclick="toggleGameProgress(this)">
-      <span>Game Completion</span>
-      <span class="gp-header-end"><span id="gp-pct">0%</span><span class="mo-caret" aria-hidden="true"></span></span>
-    </button>
-    <div class="gp-body" id="gp-body">
-      <div class="gp-bar"><div class="gp-fill" id="gp-fill"></div></div>
-      <div class="gp-detail" id="gp-detail">0 / 0 found</div>
-      <div class="gp-regions">
-        <div class="gp-region" id="gp-trosky-row">
-          <span class="gpr-name">Trosky</span>
-          <span class="gpr-bar"><span class="gpr-fill" id="gp-trosky-fill"></span></span>
-          <span class="gpr-pct" id="gp-trosky-pct">0%</span>
+  <!-- ══ INFO PANEL — game completion, map view options & about ══ -->
+  <div class="side-panel" id="side-panel-info">
+    <div class="sidebar-header">
+      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-02" alt="Kingdom Come: Deliverance II">
+      <div class="sb-tagline">Interactive Map</div>
+    </div>
+    <div class="side-scroll">
+      <!-- Game Completion — quest progress across both regions -->
+      <div class="game-progress" id="game-progress" title="Main & side quest completion across both regions">
+        <button type="button" class="gp-header" aria-expanded="true" aria-controls="gp-body" onclick="toggleGameProgress(this)">
+          <span>Game Completion</span>
+          <span class="gp-header-end"><span id="gp-pct">0%</span><span class="mo-caret" aria-hidden="true"></span></span>
+        </button>
+        <div class="gp-body" id="gp-body">
+          <div class="gp-bar"><div class="gp-fill" id="gp-fill"></div></div>
+          <div class="gp-detail" id="gp-detail">0 / 0 main quests</div>
+          <div class="gp-regions">
+            <div class="gp-region" id="gp-trosky-row">
+              <span class="gpr-name">Trosky</span>
+              <span class="gpr-quest" title="Main quests">
+                <img class="gpr-icon" src="icons/quest_main_red_icon.png?v=2026-09-02" alt="Main quests">
+                <span class="gpr-count" id="gp-trosky-main">0/0</span>
+              </span>
+              <span class="gpr-quest" title="Side quests">
+                <img class="gpr-icon" src="icons/quest_side_red_icon.png?v=2026-09-02" alt="Side quests">
+                <span class="gpr-count" id="gp-trosky-side">0/0</span>
+              </span>
+            </div>
+            <div class="gp-region" id="gp-kuttenberg-row">
+              <span class="gpr-name">Kuttenberg</span>
+              <span class="gpr-quest" title="Main quests">
+                <img class="gpr-icon" src="icons/quest_main_red_icon.png?v=2026-09-02" alt="Main quests">
+                <span class="gpr-count" id="gp-kuttenberg-main">0/0</span>
+              </span>
+              <span class="gpr-quest" title="Side quests">
+                <img class="gpr-icon" src="icons/quest_side_red_icon.png?v=2026-09-02" alt="Side quests">
+                <span class="gpr-count" id="gp-kuttenberg-side">0/0</span>
+              </span>
+            </div>
+          </div>
         </div>
-        <div class="gp-region" id="gp-kuttenberg-row">
-          <span class="gpr-name">Kuttenberg</span>
-          <span class="gpr-bar"><span class="gpr-fill" id="gp-kuttenberg-fill"></span></span>
-          <span class="gpr-pct" id="gp-kuttenberg-pct">0%</span>
+      </div>
+
+      <!-- Map view options — toggles are text-in-button chips -->
+      <div class="map-options" id="map-options">
+        <button type="button" class="mo-header" aria-expanded="true" aria-controls="mo-body" onclick="toggleMapOptions(this)">
+          <span>View</span>
+          <span class="mo-caret" aria-hidden="true"></span>
+        </button>
+        <div class="mo-body" id="mo-body">
+          <label class="mo-chip">
+            <input type="checkbox" id="toggle-labels" checked onchange="toggleSettlementLabels()">
+            <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2.2 3.5L16 11H5"/></svg>
+            <span>Settlement names</span>
+          </label>
+          <label class="mo-chip">
+            <input type="checkbox" id="toggle-local-maps" checked onchange="toggleLocalMaps()">
+            <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg>
+            <span>Detail maps</span>
+          </label>
+          <label class="mo-chip">
+            <input type="checkbox" id="toggle-hide-discovered" onchange="toggleHideDiscovered()">
+            <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 002.8 2.8"/><path d="M9.4 5.4A9.7 9.7 0 0112 5c5 0 8.5 4 9.5 7-.4 1.2-1.2 2.6-2.4 3.8"/><path d="M6.5 6.6C4.3 8 2.9 10 2.5 12c1 3 4.5 7 9.5 7 1 0 2-.2 2.9-.5"/></svg>
+            <span>Hide discovered</span>
+          </label>
         </div>
+      </div>
+
+      <div class="tools-section">
+        <h3>About</h3>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">
+          KCD2 Interactive Map v1.0<br>
+          Built with Leaflet.js<br><br>
+          The Kingdom Come: Deliverance II logo, icons, and the map are copyright and property of
+          <a href="https://warhorsestudios.cz/" style="color:var(--accent);">Warhorse Studios</a>.
+        </p>
       </div>
     </div>
   </div>
 
-  <!-- Map view options — shown by default; toggles are text-in-button chips -->
-  <div class="map-options" id="map-options">
-    <button type="button" class="mo-header" aria-expanded="true" aria-controls="mo-body" onclick="toggleMapOptions(this)">
-      <span>View</span>
-      <span class="mo-caret" aria-hidden="true"></span>
-    </button>
-    <div class="mo-body" id="mo-body">
-      <label class="mo-chip">
-        <input type="checkbox" id="toggle-labels" checked onchange="toggleSettlementLabels()">
-        <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2.2 3.5L16 11H5"/></svg>
-        <span>Settlement names</span>
-      </label>
-      <label class="mo-chip">
-        <input type="checkbox" id="toggle-local-maps" checked onchange="toggleLocalMaps()">
-        <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg>
-        <span>Detail maps</span>
-      </label>
-      <label class="mo-chip">
-        <input type="checkbox" id="toggle-hide-discovered" onchange="toggleHideDiscovered()">
-        <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 002.8 2.8"/><path d="M9.4 5.4A9.7 9.7 0 0112 5c5 0 8.5 4 9.5 7-.4 1.2-1.2 2.6-2.4 3.8"/><path d="M6.5 6.6C4.3 8 2.9 10 2.5 12c1 3 4.5 7 9.5 7 1 0 2-.2 2.9-.5"/></svg>
-        <span>Hide discovered</span>
-      </label>
+  <!-- ══ MY MARKERS PANEL ══ -->
+  <div class="side-panel" id="side-panel-mymarkers">
+    <div class="sidebar-header">
+      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-02" alt="Kingdom Come: Deliverance II">
+      <div class="sb-tagline">Interactive Map</div>
+    </div>
+    <div class="side-scroll">
+      <div class="my-markers-list" id="my-markers-list">
+        <div class="no-markers">Right-click on the map to add a custom marker.</div>
+      </div>
     </div>
   </div>
 
-  <!-- Tabs -->
-  <div class="sidebar-tabs" role="tablist" aria-label="Sidebar sections">
-    <button class="sidebar-tab active" data-tab="markers" role="tab" id="tab-btn-markers" aria-selected="true" aria-controls="tab-markers" onclick="switchTab('markers')">
-      <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      <span>Markers</span>
-    </button>
-    <button class="sidebar-tab" data-tab="my-markers" role="tab" id="tab-btn-my-markers" aria-selected="false" aria-controls="tab-my-markers" onclick="switchTab('my-markers')">
-      <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-      <span>My Markers</span>
-    </button>
-    <button class="sidebar-tab" data-tab="tools" role="tab" id="tab-btn-tools" aria-selected="false" aria-controls="tab-tools" onclick="switchTab('tools')">
-      <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
-      <span>Tools</span>
-    </button>
+  <!-- ══ TOOLS PANEL ══ -->
+  <div class="side-panel" id="side-panel-tools">
+    <div class="sidebar-header">
+      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-02" alt="Kingdom Come: Deliverance II">
+      <div class="sb-tagline">Interactive Map</div>
+    </div>
+    <div class="side-scroll">
+      <!-- Tools -->
+      <div class="tools-section">
+        <h3>Import / Export</h3>
+        <button class="tool-btn" onclick="exportAll()" style="border-left: 3px solid var(--accent);">
+          <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+          <span class="tool-txt">
+            <span class="tool-title">Export All Data</span>
+            <span class="tool-desc">Download markers, progress, label positions &amp; filters in one file</span>
+          </span>
+        </button>
+        <button class="tool-btn" onclick="showImportAllModal()" style="border-left: 3px solid var(--accent);">
+          <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+          <span class="tool-txt">
+            <span class="tool-title">Import All Data</span>
+            <span class="tool-desc">Restore everything from a backup file</span>
+          </span>
+        </button>
+      </div>
+      <div class="tools-section">
+        <h3>Data Management</h3>
+        <button class="tool-btn danger" onclick="clearMyMarkers()">
+          <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+          <span class="tool-txt">
+            <span class="tool-title">Clear My Markers</span>
+            <span class="tool-desc">Remove all custom markers (cannot undo)</span>
+          </span>
+        </button>
+        <button class="tool-btn danger" onclick="clearProgress()">
+          <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+          <span class="tool-txt">
+            <span class="tool-title">Clear Progress</span>
+            <span class="tool-desc">Reset all discovered/collected markers (cannot undo)</span>
+          </span>
+        </button>
+      </div>
+      <div class="tools-section">
+        <h3>Developer Tools</h3>
+        <button class="tool-btn" onclick="calOpen()">
+          <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2M12 22v-4"/></svg>
+          <span class="tool-txt">
+            <span class="tool-title">Calibrate Local Map</span>
+            <span class="tool-desc">Drag and resize a local map overlay to find correct bounds</span>
+          </span>
+        </button>
+        <button class="tool-btn" onclick="labelEditOpen()">
+          <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9l-3 3 3 3"/><path d="M9 5l3-3 3 3"/><path d="M15 19l-3 3-3-3"/><path d="M19 9l3 3-3 3"/><path d="M2 12h20"/><path d="M12 2v20"/></svg>
+          <span class="tool-txt">
+            <span class="tool-title">Position Settlement Names</span>
+            <span class="tool-desc">Drag each settlement name to reposition it, then export</span>
+          </span>
+        </button>
+        <button class="tool-btn" onclick="markerEditOpen()">
+          <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.83 2.83 0 014 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+          <span class="tool-txt">
+            <span class="tool-title">Edit Markers</span>
+            <span class="tool-desc">Click a marker to rename or delete it, then export</span>
+          </span>
+        </button>
+      </div>
+      </div>
   </div>
 
-  <!-- Search -->
-  <div class="search-box">
-    <div class="search-field">
-      <svg class="search-icon ui-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input type="text" class="search-input" id="search-input" role="combobox" aria-label="Search markers by name" aria-controls="search-results" aria-autocomplete="list" aria-expanded="false" placeholder="Search markers by name..." oninput="onSearchInput(this.value)" onfocus="onSearchInput(this.value)">
-      <button type="button" class="search-clear" id="search-clear" aria-label="Clear search" hidden onclick="clearSearch()">
-        <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
-      </button>
-    </div>
   </div>
-  <div class="search-results" id="search-results" role="listbox" aria-label="Search results"></div>
-
-  <!-- Markers Tab -->
-  <div class="tab-content active" id="tab-markers" role="tabpanel" aria-labelledby="tab-btn-markers">
-    <div class="category-controls">
-      <button class="cat-ctrl-btn" onclick="toggleAllCategories(true)">
-        <svg class="ui-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
-        <span>Show All</span>
-      </button>
-      <button class="cat-ctrl-btn" onclick="toggleAllCategories(false)">
-        <svg class="ui-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 002.8 2.8"/><path d="M9.4 5.4A9.7 9.7 0 0112 5c5 0 8.5 4 9.5 7-.4 1.2-1.2 2.6-2.4 3.8"/><path d="M6.5 6.6C4.3 8 2.9 10 2.5 12c1 3 4.5 7 9.5 7 1 0 2-.2 2.9-.5"/></svg>
-        <span>Hide All</span>
-      </button>
-    </div>
-    <div class="category-list" id="category-list"></div>
-  </div>
-
-  <!-- My Markers Tab -->
-  <div class="tab-content" id="tab-my-markers" role="tabpanel" aria-labelledby="tab-btn-my-markers">
-    <div class="my-markers-list" id="my-markers-list">
-      <div class="no-markers">Right-click on the map to add a custom marker.</div>
-    </div>
-  </div>
-
-  <!-- Tools Tab -->
-  <div class="tab-content" id="tab-tools" role="tabpanel" aria-labelledby="tab-btn-tools">
-    <div class="tools-section">
-      <h3>Import / Export</h3>
-      <button class="tool-btn" onclick="exportAll()" style="border-left: 3px solid var(--accent);">
-        <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
-        <span class="tool-txt">
-          <span class="tool-title">Export All Data</span>
-          <span class="tool-desc">Download markers, progress, label positions &amp; filters in one file</span>
-        </span>
-      </button>
-      <button class="tool-btn" onclick="showImportAllModal()" style="border-left: 3px solid var(--accent);">
-        <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
-        <span class="tool-txt">
-          <span class="tool-title">Import All Data</span>
-          <span class="tool-desc">Restore everything from a backup file</span>
-        </span>
-      </button>
-    </div>
-    <div class="tools-section">
-      <h3>Data Management</h3>
-      <button class="tool-btn danger" onclick="clearMyMarkers()">
-        <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
-        <span class="tool-txt">
-          <span class="tool-title">Clear My Markers</span>
-          <span class="tool-desc">Remove all custom markers (cannot undo)</span>
-        </span>
-      </button>
-      <button class="tool-btn danger" onclick="clearProgress()">
-        <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
-        <span class="tool-txt">
-          <span class="tool-title">Clear Progress</span>
-          <span class="tool-desc">Reset all discovered/collected markers (cannot undo)</span>
-        </span>
-      </button>
-    </div>
-    <div class="tools-section">
-      <h3>Developer Tools</h3>
-      <button class="tool-btn" onclick="calOpen()">
-        <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2M12 22v-4"/></svg>
-        <span class="tool-txt">
-          <span class="tool-title">Calibrate Local Map</span>
-          <span class="tool-desc">Drag and resize a local map overlay to find correct bounds</span>
-        </span>
-      </button>
-      <button class="tool-btn" onclick="labelEditOpen()">
-        <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9l-3 3 3 3"/><path d="M9 5l3-3 3 3"/><path d="M15 19l-3 3-3-3"/><path d="M19 9l3 3-3 3"/><path d="M2 12h20"/><path d="M12 2v20"/></svg>
-        <span class="tool-txt">
-          <span class="tool-title">Position Settlement Names</span>
-          <span class="tool-desc">Drag each settlement name to reposition it, then export</span>
-        </span>
-      </button>
-      <button class="tool-btn" onclick="markerEditOpen()">
-        <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.83 2.83 0 014 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
-        <span class="tool-txt">
-          <span class="tool-title">Edit Markers</span>
-          <span class="tool-desc">Click a marker to rename or delete it, then export</span>
-        </span>
-      </button>
-    </div>
-    <div class="tools-section">
-      <h3>About</h3>
-      <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">
-        KCD2 Interactive Map v1.0<br>
-        Built with Leaflet.js<br><br>
-        The Kingdom Come: Deliverance II logo, icons, and the map are copyright and property of
-        <a href="https://warhorsestudios.cz/" style="color:var(--accent);">Warhorse Studios</a>.
-      </p>
-    </div>
-  </div>
-</div>
 
 <!-- Scrim behind the open sidebar on mobile (tap to close) -->
 <div id="sidebar-scrim" onclick="toggleSidebar()" aria-hidden="true"></div>
 
 <!-- Map -->
 <div id="map-container">
-  <button id="toggle-sidebar" onclick="toggleSidebar()" aria-label="Toggle sidebar" title="Toggle sidebar"><img src="icons/brand/kcd2_icon.jpg?v=2026-07-17-1858" alt=""></button>
+  <button id="toggle-sidebar" onclick="toggleSidebar()" aria-label="Toggle sidebar" title="Toggle sidebar"><img src="icons/brand/kcd2_icon.jpg?v=2026-09-02" alt=""></button>
   <div id="map"></div>
   <div id="map-controls">
     <button onclick="resetView()" title="Reset view to whole region" aria-label="Reset view">⌂</button>
@@ -348,21 +387,21 @@
      order preserved. The whole-game completion bar needs BOTH regions' totals up
      front, and these are also the file:// fallback, so we keep loading both — just
      no longer render-blocking. -->
-<script defer src="data/markers_trosky.js?v=2026-07-17-1858"></script>
-<script defer src="data/markers_kuttenberg.js?v=2026-07-17-1858"></script>
-<script defer src="data/icon_map.js?v=2026-07-17-1858"></script>
-<script defer src="data/settlement_labels.js?v=2026-07-17-1858"></script>
-<script defer src="data/local_maps.js?v=2026-07-17-1858"></script>
+<script defer src="data/markers_trosky.js?v=2026-09-02"></script>
+<script defer src="data/markers_kuttenberg.js?v=2026-09-02"></script>
+<script defer src="data/icon_map.js?v=2026-09-02"></script>
+<script defer src="data/settlement_labels.js?v=2026-09-02"></script>
+<script defer src="data/local_maps.js?v=2026-09-02"></script>
 <!-- app split into domain scripts; load order matters (shared global scope) -->
-<script defer src="js/config.js?v=2026-07-17-1858"></script>
-<script defer src="js/map.js?v=2026-07-17-1858"></script>
-<script defer src="js/markers.js?v=2026-07-17-1858"></script>
-<script defer src="js/sidebar.js?v=2026-07-17-1858"></script>
-<script defer src="js/user-markers.js?v=2026-07-17-1858"></script>
-<script defer src="js/import-export.js?v=2026-07-17-1858"></script>
-<script defer src="js/local-maps.js?v=2026-07-17-1858"></script>
-<script defer src="js/labels.js?v=2026-07-17-1858"></script>
-<script defer src="js/storage.js?v=2026-07-17-1858"></script>
-<script defer src="js/main.js?v=2026-07-17-1858"></script>
+<script defer src="js/config.js?v=2026-09-02"></script>
+<script defer src="js/map.js?v=2026-09-02"></script>
+<script defer src="js/markers.js?v=2026-09-02"></script>
+<script defer src="js/sidebar.js?v=2026-09-02"></script>
+<script defer src="js/user-markers.js?v=2026-09-02"></script>
+<script defer src="js/import-export.js?v=2026-09-02"></script>
+<script defer src="js/local-maps.js?v=2026-09-02"></script>
+<script defer src="js/labels.js?v=2026-09-02"></script>
+<script defer src="js/storage.js?v=2026-09-02"></script>
+<script defer src="js/main.js?v=2026-09-02"></script>
 </body>
 </html>

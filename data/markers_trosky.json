@@ -9382,6 +9382,23 @@
       "gg_icon": "/images/map-marker-icon/15/253432/quest_side_blue_started_icon_result-1821e58e-1821e58e.png.png"
     },
     {
+      "name": "Fortuna",
+      "category": "quest_main",
+      "description": "",
+      "x": 2317,
+      "y": 2893,
+      "world_x": 0,
+      "world_y": 0,
+      "world_z": 0,
+      "poi_type_name": "gg_import_quest_main",
+      "poi_type_id": "_gg_db-45971",
+      "is_fast_travel": false,
+      "is_discoverable": true,
+      "source": "gamerguides",
+      "gg_marker_id": 199726,
+      "gg_icon": "/images/map-marker-icon/15/253402/quest_main_red_started_icon_result-841c595d.png.png"
+    },
+    {
       "name": "Combat Training II",
       "category": "quest_side",
       "description": "",
