@@ -3,7 +3,14 @@
 // ═══════════════════════════════════════════════
 
 function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('collapsed');
+  const sb = document.getElementById('sidebar');
+  const collapsed = sb.classList.toggle('collapsed');
+  const btn = document.getElementById('rail-collapse');
+  if (btn) {
+    btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    btn.setAttribute('title', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+    btn.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+  }
 }
 
 // Collapsible "View" disclosure — reveals/hides the three map-view toggles.

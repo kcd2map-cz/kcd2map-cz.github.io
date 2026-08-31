@@ -7,7 +7,7 @@ window.ICON_MAP = {
   "baker":            "icons/bakery_icon.png",
   "barber":           "icons/barber_icon.png",
   "baths":            "icons/baths_icon.png",
-  "blacksmith":       "icons/blacksmith_icon.png",
+  "blacksmith":       "icons/smithy_icon.png",
   "smithy":           "icons/smithy_icon.png",
   "butchery":         "icons/butchery_icon.png",
   "cobbler":          "icons/shoemaker_icon.png",

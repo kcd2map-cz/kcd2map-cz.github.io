@@ -62,9 +62,11 @@
     display: flex;
     flex-direction: row;
     z-index: 1000;
-    transition: margin-left 0.3s ease;
+    transition: width 0.3s ease;
   }
-  #sidebar.collapsed { margin-left: -300px; }
+  /* Collapsing hides only the panels (logo + content) — the icon rail stays put. */
+  #sidebar.collapsed { width: 38px; min-width: 38px; }
+  #sidebar.collapsed .side-panel { display: none; }
 
   /* ── Vertical icon rail (toggle Markers / Informace) ── */
   #side-rail {
@@ -98,6 +100,11 @@
     border-left-color: var(--accent);
     background: var(--bg-active);
   }
+  /* Collapse control pinned to the bottom of the rail. Its chevron rotates: left
+     (open, click to collapse) → right (collapsed, click to expand). */
+  .rail-btn.rail-collapse { margin-top: auto; border-left-color: transparent; }
+  .rail-btn.rail-collapse .collapse-chevron { transition: transform 0.3s ease; transform: rotate(0deg); }
+  #sidebar.collapsed .rail-btn.rail-collapse .collapse-chevron { transform: rotate(180deg); }
 
   /* ── Side panels (Markers / Informace) ── */
   .side-panel {
@@ -651,28 +658,6 @@
   }
   .leaflet-tooltip.poi-tooltip::before { display: none; }
 
-  /* ── Toggle Button ── */
-  /* The panel handle is the KCD crest emblem (replaces the old ☰). */
-  #toggle-sidebar {
-    position: absolute;
-    left: 0;
-    top: 80px;
-    z-index: 1001;
-    padding: 5px 7px 5px 5px;
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
-    border-left: none;
-    border-radius: 0 6px 6px 0;
-    cursor: pointer;
-    line-height: 0;
-    transition: all 0.2s;
-  }
-  #toggle-sidebar img {
-    width: 26px; height: 26px; display: block; border-radius: 4px;
-  }
-  #toggle-sidebar:hover { background: var(--bg-hover); }
-  #toggle-sidebar:hover img { filter: brightness(1.12); }
-
   /* ── Coordinates Display ── */
   #coords-display,
   #zoom-display {
@@ -1179,7 +1164,7 @@
 
   @media (max-width: 768px) {
     #sidebar { width: 280px; min-width: 280px; position: absolute; height: 100%; z-index: 1002; }
-    #toggle-sidebar { z-index: 1003; }                  /* always tappable, above the open drawer */
+    #sidebar.collapsed { width: 38px; min-width: 38px; }
     #sidebar:not(.collapsed) + #sidebar-scrim {          /* tap-to-close dim behind the open drawer */
       display: block; position: fixed; inset: 0; z-index: 1001; background: rgba(0,0,0,0.5);
     }
