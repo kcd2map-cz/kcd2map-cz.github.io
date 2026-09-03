@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="KCD2 Interactive Map">
 <meta name="twitter:description" content="Interactive POI/loot/quest map for Kingdom Come: Deliverance II with progress tracking.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
-<link rel="stylesheet" href="style.css?v=2026-09-03">
+<link rel="stylesheet" href="style.css?v=2026-09-04">
 </head>
 <body>
 
@@ -59,7 +59,7 @@
   <!-- ══ MARKERS PANEL (default view) ══ -->
   <div class="side-panel active" id="side-panel-markers">
     <div class="sidebar-header">
-      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-03" alt="Kingdom Come: Deliverance II">
+      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-04" alt="Kingdom Come: Deliverance II">
       <div class="sb-tagline">Interactive Map</div>
     </div>
 
@@ -103,7 +103,7 @@
   <!-- ══ INFO PANEL — game completion, map view options, region switcher & about ══ -->
   <div class="side-panel" id="side-panel-info">
     <div class="sidebar-header">
-      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-03" alt="Kingdom Come: Deliverance II">
+      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-04" alt="Kingdom Come: Deliverance II">
       <div class="sb-tagline">Interactive Map</div>
     </div>
     <div class="side-scroll">
@@ -128,22 +128,22 @@
             <div class="gp-region" id="gp-trosky-row">
               <span class="gpr-name">Trosky</span>
               <span class="gpr-quest" title="Main quests">
-                <img class="gpr-icon" src="icons/quest_main_red_icon.png?v=2026-09-03" alt="Main quests">
+                <img class="gpr-icon" src="icons/quest_main_red_icon.png?v=2026-09-04" alt="Main quests">
                 <span class="gpr-count" id="gp-trosky-main">0/0</span>
               </span>
               <span class="gpr-quest" title="Side quests">
-                <img class="gpr-icon" src="icons/quest_side_red_icon.png?v=2026-09-03" alt="Side quests">
+                <img class="gpr-icon" src="icons/quest_side_red_icon.png?v=2026-09-04" alt="Side quests">
                 <span class="gpr-count" id="gp-trosky-side">0/0</span>
               </span>
             </div>
             <div class="gp-region" id="gp-kuttenberg-row">
               <span class="gpr-name">Kuttenberg</span>
               <span class="gpr-quest" title="Main quests">
-                <img class="gpr-icon" src="icons/quest_main_red_icon.png?v=2026-09-03" alt="Main quests">
+                <img class="gpr-icon" src="icons/quest_main_red_icon.png?v=2026-09-04" alt="Main quests">
                 <span class="gpr-count" id="gp-kuttenberg-main">0/0</span>
               </span>
               <span class="gpr-quest" title="Side quests">
-                <img class="gpr-icon" src="icons/quest_side_red_icon.png?v=2026-09-03" alt="Side quests">
+                <img class="gpr-icon" src="icons/quest_side_red_icon.png?v=2026-09-04" alt="Side quests">
                 <span class="gpr-count" id="gp-kuttenberg-side">0/0</span>
               </span>
             </div>
@@ -190,7 +190,7 @@
   <!-- ══ MY MARKERS PANEL ══ -->
   <div class="side-panel" id="side-panel-mymarkers">
     <div class="sidebar-header">
-      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-03" alt="Kingdom Come: Deliverance II">
+      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-04" alt="Kingdom Come: Deliverance II">
       <div class="sb-tagline">Interactive Map</div>
     </div>
     <div class="side-scroll">
@@ -203,7 +203,7 @@
   <!-- ══ TOOLS PANEL ══ -->
   <div class="side-panel" id="side-panel-tools">
     <div class="sidebar-header">
-      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-03" alt="Kingdom Come: Deliverance II">
+      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-04" alt="Kingdom Come: Deliverance II">
       <div class="sb-tagline">Interactive Map</div>
     </div>
     <div class="side-scroll">
@@ -400,21 +400,21 @@
      order preserved. The whole-game completion bar needs BOTH regions' totals up
      front, and these are also the file:// fallback, so we keep loading both — just
      no longer render-blocking. -->
-<script defer src="data/markers_trosky.js?v=2026-09-03"></script>
-<script defer src="data/markers_kuttenberg.js?v=2026-09-03"></script>
-<script defer src="data/icon_map.js?v=2026-09-03"></script>
-<script defer src="data/settlement_labels.js?v=2026-09-03"></script>
-<script defer src="data/local_maps.js?v=2026-09-03"></script>
+<script defer src="data/markers_trosky.js?v=2026-09-04"></script>
+<script defer src="data/markers_kuttenberg.js?v=2026-09-04"></script>
+<script defer src="data/icon_map.js?v=2026-09-04"></script>
+<script defer src="data/settlement_labels.js?v=2026-09-04"></script>
+<script defer src="data/local_maps.js?v=2026-09-04"></script>
 <!-- app split into domain scripts; load order matters (shared global scope) -->
-<script defer src="js/config.js?v=2026-09-03"></script>
-<script defer src="js/map.js?v=2026-09-03"></script>
-<script defer src="js/markers.js?v=2026-09-03"></script>
-<script defer src="js/sidebar.js?v=2026-09-03"></script>
-<script defer src="js/user-markers.js?v=2026-09-03"></script>
-<script defer src="js/import-export.js?v=2026-09-03"></script>
-<script defer src="js/local-maps.js?v=2026-09-03"></script>
-<script defer src="js/labels.js?v=2026-09-03"></script>
-<script defer src="js/storage.js?v=2026-09-03"></script>
-<script defer src="js/main.js?v=2026-09-03"></script>
+<script defer src="js/config.js?v=2026-09-04"></script>
+<script defer src="js/map.js?v=2026-09-04"></script>
+<script defer src="js/markers.js?v=2026-09-04"></script>
+<script defer src="js/sidebar.js?v=2026-09-04"></script>
+<script defer src="js/user-markers.js?v=2026-09-04"></script>
+<script defer src="js/import-export.js?v=2026-09-04"></script>
+<script defer src="js/local-maps.js?v=2026-09-04"></script>
+<script defer src="js/labels.js?v=2026-09-04"></script>
+<script defer src="js/storage.js?v=2026-09-04"></script>
+<script defer src="js/main.js?v=2026-09-04"></script>
 </body>
 </html>
