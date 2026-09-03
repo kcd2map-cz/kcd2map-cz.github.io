@@ -1,17 +1,16 @@
-// Local map overlay configuration
-window.LOCAL_MAPS_DATA = {
+{
   "kuttenberg": [
     {
       "name": "Kuttenberg",
       "image": "maps/local/kutna_hora.webp",
       "bounds": [
         [
-          4263.908952667772,
-          8389.627404243518
+          3420,
+          8319
         ],
         [
-          6904.908952667772,
-          11256.627404243518
+          6061,
+          11186
         ]
       ],
       "minZoom": 4.75
@@ -29,19 +28,19 @@ window.LOCAL_MAPS_DATA = {
           2852
         ]
       ],
-      "minZoom": 6
+      "minZoom": 6.0
     },
     {
       "name": "Raborsch",
       "image": "maps/local/ratbor.webp",
       "bounds": [
         [
-          7378.831594554949,
-          2200.6107329265524
+          3275,
+          2209
         ],
         [
-          8686.83159455495,
-          3526.6107329265524
+          4583,
+          3535
         ]
       ],
       "minZoom": 5.75
@@ -134,7 +133,7 @@ window.LOCAL_MAPS_DATA = {
           3530
         ]
       ],
-      "minZoom": 6
+      "minZoom": 6.0
     },
     {
       "name": "Maleshov",
@@ -149,7 +148,7 @@ window.LOCAL_MAPS_DATA = {
           7082
         ]
       ],
-      "minZoom": 6
+      "minZoom": 6.0
     },
     {
       "name": "Miskowitz",
@@ -179,7 +178,7 @@ window.LOCAL_MAPS_DATA = {
           7778
         ]
       ],
-      "minZoom": 6
+      "minZoom": 6.0
     },
     {
       "name": "Pschitoky",
@@ -194,7 +193,7 @@ window.LOCAL_MAPS_DATA = {
           7314
         ]
       ],
-      "minZoom": 6
+      "minZoom": 6.0
     },
     {
       "name": "Old Kutna",
@@ -209,22 +208,22 @@ window.LOCAL_MAPS_DATA = {
           9032
         ]
       ],
-      "minZoom": 6
+      "minZoom": 6.0
     },
     {
       "name": "Sedletz Monastery",
       "image": "maps/local/klaster_interior.webp",
       "bounds": [
         [
-          6041.3609716458795,
-          10703.598325929494
+          2447,
+          2885
         ],
         [
-          7008.3609716458795,
-          11762.598325929494
+          3414,
+          3944
         ]
       ],
-      "minZoom": 6
+      "minZoom": 6.0
     }
   ],
   "trosky": [
@@ -271,7 +270,7 @@ window.LOCAL_MAPS_DATA = {
           3981
         ]
       ],
-      "minZoom": 5
+      "minZoom": 5.0
     },
     {
       "name": "Zhelejov",
@@ -346,7 +345,7 @@ window.LOCAL_MAPS_DATA = {
           5318
         ]
       ],
-      "minZoom": 5
+      "minZoom": 5.0
     }
   ]
-};
+}

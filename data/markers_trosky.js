@@ -11321,7 +11321,7 @@ window.MARKER_DATA_TROSKY = {
       "gg_icon": "/images/map-marker-icon/15/253483/quest_activity_red_started_icon_result-5dcd5a5e-5dcd5a5e.png.png"
     },
     {
-      "name": "For Whom the Bells Tolls",
+      "name": "For Whom the Bell Tolls",
       "category": "quest_main",
       "description": "",
       "x": 4478,

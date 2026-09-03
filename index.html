@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KCD2 Interactive Map — Kingdom Come: Deliverance II</title>
-<link rel="icon" type="image/jpeg" href="icons/brand/kcd2_icon.jpg?v=2026-09-03">
+<link rel="icon" type="image/png" href="main_icon.png">
 <meta name="description" content="Interactive map for Kingdom Come: Deliverance II — POIs, loot, quests, NPCs and personal progress tracking across the Trosky and Kuttenberg regions.">
 <meta name="theme-color" content="#1a1714">
 <meta property="og:type" content="website">
 <meta property="og:title" content="KCD2 Interactive Map">
 <meta property="og:description" content="Explore POIs, loot, quests and NPCs across Trosky and Kuttenberg — with personal progress tracking, custom markers, and settlement detail maps.">
-<meta property="og:url" content="https://quangdao215.github.io/kcd2_interactive_map/">
-<meta property="og:image" content="https://quangdao215.github.io/kcd2_interactive_map/main_icon.png">
+<meta property="og:url" content="https://kcd2map-cz.github.io/">
+<meta property="og:image" content="https://kcd2map-cz.github.io/main_icon.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="KCD2 Interactive Map">
 <meta name="twitter:description" content="Interactive POI/loot/quest map for Kingdom Come: Deliverance II with progress tracking.">
@@ -20,21 +20,22 @@
 </head>
 <body>
 
-<!-- Cinematic intro / themed loading overlay -->
-<div id="intro-overlay" onclick="dismissIntro()" aria-hidden="true">
-  <div class="intro-inner">
-    <img class="intro-crest" src="main_icon.png" alt="">
-    <div class="intro-title">Kingdom Come<span>:</span> Deliverance II</div>
-    <div class="intro-quill"></div>
-    <div class="intro-sub">Bohemia · Anno Domini 1403</div>
-    <div class="intro-loading">Unrolling the map…</div>
+  <!-- Cinematic intro / themed loading overlay -->
+<!--  <div id="intro-overlay" onclick="dismissIntro()" aria-hidden="true">
+    <div class="intro-inner">
+      <img class="intro-crest" src="main_icon.png" alt="">
+      <div class="intro-title">Kingdom Come<span>:</span> Deliverance II</div>
+      <div class="intro-quill"></div>
+      <div class="intro-sub">Bohemia · Anno Domini 1403</div>
+      <div class="intro-loading">Unrolling the map…</div>
+    </div>
   </div>
-</div>
-
+-->
 <!-- Sidebar -->
 <div id="sidebar">
   <!-- Vertical icon rail — toggles between Markers, My Markers and Tools -->
   <div id="side-rail" role="tablist" aria-label="Sidebar sections" aria-orientation="vertical">
+    <img class="rail-brand" src="main_icon.png" alt="Kingdom Come: Deliverance II">
     <button class="rail-btn active" id="rail-markers" role="tab" aria-selected="true" onclick="switchSide('markers')" title="Markers" aria-label="Markers">
       <svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
     </button>
@@ -47,6 +48,9 @@
     <button class="rail-btn" id="rail-tools" role="tab" aria-selected="false" onclick="switchSide('tools')" title="Tools" aria-label="Tools">
       <svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
     </button>
+    <a class="rail-brand rail-brand-link" href="https://kcdmap-cz.github.io" title="KCD1 Map" aria-label="KCD1 Map">
+      <img src="kcd1_icon.png" alt="KCD1 Map">
+    </a>
     <button class="rail-btn rail-collapse" id="rail-collapse" role="button" onclick="toggleSidebar()" title="Collapse sidebar" aria-label="Collapse sidebar" aria-expanded="true">
       <svg class="ui-icon collapse-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
@@ -115,7 +119,7 @@
       <div class="game-progress" id="game-progress" title="Main & side quest completion across both regions">
         <button type="button" class="gp-header" aria-expanded="true" aria-controls="gp-body" onclick="toggleGameProgress(this)">
           <span>Game Completion</span>
-          <span class="gp-header-end"><span id="gp-pct">0%</span><span class="mo-caret" aria-hidden="true"></span></span>
+          <span class="gp-header-end"><span id="gp-pct">0%</span></span>
         </button>
         <div class="gp-body" id="gp-body">
           <div class="gp-bar"><div class="gp-fill" id="gp-fill"></div></div>
@@ -151,7 +155,6 @@
       <div class="map-options" id="map-options">
         <button type="button" class="mo-header" aria-expanded="true" aria-controls="mo-body" onclick="toggleMapOptions(this)">
           <span>View</span>
-          <span class="mo-caret" aria-hidden="true"></span>
         </button>
         <div class="mo-body" id="mo-body">
           <label class="mo-chip">
