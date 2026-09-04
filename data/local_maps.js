@@ -21,12 +21,12 @@ window.LOCAL_MAPS_DATA = {
       "image": "maps/local/suchdol.webp",
       "bounds": [
         [
-          1202,
-          1660
+          5286,
+          1649
         ],
         [
-          2376,
-          2852
+          6460,
+          2841
         ]
       ],
       "minZoom": 6
@@ -51,12 +51,12 @@ window.LOCAL_MAPS_DATA = {
       "image": "maps/local/bohounovice.webp",
       "bounds": [
         [
-          3611,
-          3348
+          7722,
+          3354
         ],
         [
-          4614,
-          4240
+          8725,
+          4246
         ]
       ],
       "minZoom": 6.25
@@ -66,12 +66,12 @@ window.LOCAL_MAPS_DATA = {
       "image": "maps/local/certovka.webp",
       "bounds": [
         [
-          4283,
-          5732
+          8400,
+          5740
         ],
         [
-          5057,
-          6516
+          9174,
+          6524
         ]
       ],
       "minZoom": 6.5
@@ -81,12 +81,12 @@ window.LOCAL_MAPS_DATA = {
       "image": "maps/local/horany.webp",
       "bounds": [
         [
-          3190,
-          5556
+          7297,
+          5564
         ],
         [
-          4398,
-          6778
+          8505,
+          6786
         ]
       ],
       "minZoom": 5.75
@@ -96,12 +96,12 @@ window.LOCAL_MAPS_DATA = {
       "image": "maps/local/grunta.webp",
       "bounds": [
         [
-          1679,
-          6903
+          7384,
+          6972
         ],
         [
-          3036,
-          8066
+          8741,
+          8135
         ]
       ],
       "minZoom": 5.75
@@ -111,12 +111,12 @@ window.LOCAL_MAPS_DATA = {
       "image": "maps/local/opatovice.webp",
       "bounds": [
         [
-          2886,
-          3927
+          6229,
+          3962
         ],
         [
-          4282,
-          4991
+          7625,
+          5026
         ]
       ],
       "minZoom": 5.75
@@ -126,12 +126,12 @@ window.LOCAL_MAPS_DATA = {
       "image": "maps/local/vysoka.webp",
       "bounds": [
         [
-          -160,
-          2592
+          3907,
+          2579
         ],
         [
-          991,
-          3530
+          5058,
+          3517
         ]
       ],
       "minZoom": 6
@@ -141,12 +141,12 @@ window.LOCAL_MAPS_DATA = {
       "image": "maps/local/malesov.webp",
       "bounds": [
         [
-          8521,
-          5946
+          782,
+          5960
         ],
         [
-          9659,
-          7082
+          1920,
+          7096
         ]
       ],
       "minZoom": 6
@@ -156,12 +156,12 @@ window.LOCAL_MAPS_DATA = {
       "image": "maps/local/miskovice.webp",
       "bounds": [
         [
-          4485,
-          4775
+          4629,
+          4812
         ],
         [
-          5847,
-          6093
+          5991,
+          6130
         ]
       ],
       "minZoom": 5.75
@@ -171,12 +171,12 @@ window.LOCAL_MAPS_DATA = {
       "image": "maps/local/bylany.webp",
       "bounds": [
         [
-          5667,
-          6619
+          3616,
+          6659
         ],
         [
-          6801,
-          7778
+          4750,
+          7818
         ]
       ],
       "minZoom": 6
@@ -186,12 +186,12 @@ window.LOCAL_MAPS_DATA = {
       "image": "maps/local/pritoky.webp",
       "bounds": [
         [
-          3834,
-          6381
+          5499,
+          6431
         ],
         [
-          4933,
-          7314
+          6598,
+          7364
         ]
       ],
       "minZoom": 6
@@ -201,12 +201,12 @@ window.LOCAL_MAPS_DATA = {
       "image": "maps/local/stara_kutna.webp",
       "bounds": [
         [
-          3197,
-          7819
+          6175,
+          7884
         ],
         [
-          4208,
-          9032
+          7186,
+          9097
         ]
       ],
       "minZoom": 6
