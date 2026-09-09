@@ -1,0 +1,36 @@
+# Trosky Main Story
+
+1	Easy Riders	--	Henry and Hans travel toward Trosky
+2	Fortuna	--	Recovery at Bozhena's hut
+3	Laboratores	--	Opens the first broad Trosky KCD2 quests window
+4	Wedding Crashers	--	Choose Radovan or Kreyzl's route to reach the Semine wedding
+5	For Whom the Bell Tolls	--	Timed castle sequence immediately after the wedding
+6	Back in the Saddle	--	Opens a short window for Trosky Castle tasks and Klara's first romance
+7	Necessary Evil	--	Best KCD2 quests checkpoint for clearing remaining Trosky content
+8	For Victory!	--	Warning leads into the act-ending locked sequence
+9	Divine Messenger	--	Brief perspective change
+10	The Finger of God	--	Continues directly toward the regional finale
+11	Storm	--	Ends the Trosky act and moves the story to Kuttenberg
+
+# Kuttenberg Main Story
+
+12	The Sword and the Quill	--	Starts the Kuttenberg KCD2 quests section
+13	Speak of the Devil	--	Establishes the next campaign objective
+14	The Devil's Pack	--	Reassembles allies and unlocks a large KCD2 quests window
+15	Into the Underworld	--	Investigation inside Kuttenberg
+16	Via Argentum	--	Silver and mint investigation
+17	Taking French Leave	--	Maleshov infiltration; includes the missable Rosa's Book task
+18	The King's Gambit	--	Timed council sequence; do not leave it waiting
+19	The Feast	--	Continues the political arc
+20	Exodus	--	Story progression after the council sequence
+21	The Lion's Den	--	Infiltration around Sigismund's camp
+22	Dancing with the Devil	--	Leads toward the late campaign
+23	Oratores	--	Major Kuttenberg KCD2 quests cutoff occurs late in this quest
+24	The Italian Job	--	Begins the endgame run
+25	Civitas Pragensis	--	Endgame story sequence
+26	So it begins…	--	Battle preparation
+27	Besieged	--	Siege sequence
+28	Hunger and Despair	--	Locked endgame progression
+29	Reckoning	--	Final major operation before the conclusion
+30	Last Rites	--	Endgame quest; not the prologue quest
+31	Judgement Day	--	Final main quest

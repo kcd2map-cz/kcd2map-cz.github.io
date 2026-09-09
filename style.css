@@ -208,6 +208,9 @@
   .region-switcher:has(.region-btn[data-region="kuttenberg"].active)::before {
     transform: translateX(100%);
   }
+  .region-switcher:has(.region-btn[data-lang="en"].active)::before {
+    transform: translateX(100%);
+  }
   .region-btn {
     position: relative; z-index: 1;   /* sit above the sliding pill */
     flex: 1;
