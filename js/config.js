@@ -34,6 +34,7 @@ const CONFIG = {
     collapsedGroups: 'kcd2_collapsed_groups',
     activeTab: 'kcd2_active_tab',
     mapHintDismissed: 'kcd2_map_hint_dismissed',
+    lang: 'kcd2_lang',
   },
   // IndexedDB store for the remembered data/ folder handle (File System Access API).
   dirHandleStore: { db: 'kcd2-fs', store: 'handles', key: 'dataDir' },

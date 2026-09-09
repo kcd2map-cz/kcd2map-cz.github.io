@@ -65,11 +65,13 @@ async function init() {
   }
 
   // Set active region button (drives the sliding pill + aria on first paint)
-  document.querySelectorAll('.region-btn').forEach(btn => {
+  document.querySelectorAll('.region-btn[data-region]').forEach(btn => {
     const on = btn.dataset.region === currentRegion;
     btn.classList.toggle('active', on);
     btn.setAttribute('aria-pressed', on ? 'true' : 'false');
   });
+
+  initLang();
 
   // Load region (creates the map)
   await loadRegion(currentRegion);
@@ -377,7 +379,7 @@ function switchRegion(region) {
   currentRegion = region;
   localStorage.setItem(CONFIG.storageKeys.lastRegion, region);
 
-  document.querySelectorAll('.region-btn').forEach(btn => {
+  document.querySelectorAll('.region-btn[data-region]').forEach(btn => {
     const on = btn.dataset.region === region;
     btn.classList.toggle('active', on);
     btn.setAttribute('aria-pressed', on ? 'true' : 'false');

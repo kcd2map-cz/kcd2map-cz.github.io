@@ -47,6 +47,24 @@ function switchSide(side) {
   try { localStorage.setItem(CONFIG.storageKeys.activeTab, side); } catch (e) { /* private mode */ }
 }
 
+let currentLang = 'cs';
+function switchLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('#side-panel-tools .region-btn[data-lang]').forEach(b => {
+    const on = b.dataset.lang === lang;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  try { localStorage.setItem(CONFIG.storageKeys.lang, lang); } catch (e) { /* private mode */ }
+}
+function initLang() {
+  try {
+    const saved = localStorage.getItem(CONFIG.storageKeys.lang);
+    if (saved === 'cs' || saved === 'en') currentLang = saved;
+  } catch (e) { /* private mode */ }
+  switchLang(currentLang);
+}
+
 function showToast(message) {
   const toast = document.getElementById('toast');
   toast.textContent = message;
