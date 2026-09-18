@@ -8,8 +8,8 @@ function toggleSidebar() {
   const btn = document.getElementById('rail-collapse');
   if (btn) {
     btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
-    btn.setAttribute('title', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
-    btn.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+    btn.setAttribute('title', tr(collapsed ? 'Expand sidebar' : 'Collapse sidebar'));
+    btn.setAttribute('aria-label', tr(collapsed ? 'Expand sidebar' : 'Collapse sidebar'));
   }
 }
 
@@ -56,7 +56,65 @@ function switchLang(lang) {
     b.setAttribute('aria-pressed', on ? 'true' : 'false');
   });
   try { localStorage.setItem(CONFIG.storageKeys.lang, lang); } catch (e) { /* private mode */ }
+
+  // Re-point <html lang> and repaint every data-i18n element (static chrome).
+  document.documentElement.lang = lang;
+  applyTranslations();
+
+  // Quest markers show localized names — re-render them plus the open search.
+  if (typeof refreshQuestMarkerLanguage === 'function') refreshQuestMarkerLanguage();
+  // Settlement (village) names switch language too.
+  if (typeof refreshSettlementLabelLanguage === 'function') refreshSettlementLabelLanguage();
+  const searchInput = document.getElementById('search-input');
+  if (searchInput && searchInput.value) onSearchInput(searchInput.value);
+
+  // Refresh dynamic panels that embed language-specific strings.
+  if (typeof renderMyMarkersList === 'function') renderMyMarkersList();
+  if (typeof updateMarkerEditStatus === 'function') updateMarkerEditStatus();
+  if (typeof updatePromoteStatus === 'function') updatePromoteStatus();
+  if (typeof updateGameProgress === 'function') updateGameProgress();
+  // An open POI popup rebuilds its content fn → localized quest name + progress labels.
+  if (map && map._popup && map._popup.isOpen()) {
+    const src = map._popup._source;
+    if (src && src._poi) map._popup.update();
+  }
 }
+
+// Apply the current language to every element marked with data-i18n. Plain text
+// elements get textContent, elements with data-i18n-html get innerHTML, and the
+// comma-separated data-i18n-attr attributes (e.g. title,aria-label) are sourced
+// from the ORIGINAL English value (cached on the element) — so en↔cs toggling
+// never re-translates an already-translated attribute and sticks.
+// The sidebar "which markers to show" category list is NOT marked up, so it
+// intentionally stays in English (marker data is English by design).
+function applyTranslations() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (el.hasAttribute('data-i18n-html')) {
+      el.innerHTML = tr(key);   // HTML-capable keys (e.g. the <b>right-click</b> hint)
+    } else if (el.childElementCount === 0 && el.dataset.i18nText !== 'off') {
+      el.textContent = tr(key); // text-only nodes — never clobber an element's children
+    }
+    // Remember the pristine English source for each translated attribute once, so
+    // switching en→cs→en restores the original wording instead of feeding the
+    // already-Czech text back through tr() (which would leave it Czech).
+    if (!el._i18nOrig) {
+      const orig = {};
+      (el.dataset.i18nAttr || '').split(',').forEach(a => {
+        a = a.trim();
+        if (a && el.hasAttribute(a)) orig[a] = el.getAttribute(a);
+      });
+      el._i18nOrig = orig;
+    }
+    Object.keys(el._i18nOrig).forEach(a => el.setAttribute(a, tr(el._i18nOrig[a])));
+  });
+  // Tool-panel toggle buttons flip their text at runtime — re-sync from live state.
+  const le = document.getElementById('label-edit-toggle');
+  if (le) le.textContent = tr(labelEditing ? '■ Stop Editing' : '✥ Start Editing');
+  const me = document.getElementById('marker-edit-toggle');
+  if (me) me.textContent = tr(markerEditing ? '■ Stop Editing' : '✥ Start Editing');
+}
+
 function initLang() {
   try {
     const saved = localStorage.getItem(CONFIG.storageKeys.lang);
@@ -94,10 +152,10 @@ let _confirmResolve = null;
 function showConfirm(message, { title = 'Are you sure?', confirmText = 'Confirm', danger = false } = {}) {
   return new Promise(resolve => {
     _confirmResolve = resolve;
-    document.getElementById('confirm-title').textContent = title;
-    document.getElementById('confirm-message').textContent = message;
+    document.getElementById('confirm-title').textContent = tr(title);
+    document.getElementById('confirm-message').textContent = tr(message);
     const ok = document.getElementById('confirm-ok');
-    ok.textContent = confirmText;
+    ok.textContent = tr(confirmText);
     ok.classList.toggle('btn-danger', danger);
     ok.classList.toggle('btn-primary', !danger);
     _modalOpener = document.activeElement;
@@ -169,10 +227,10 @@ function copyCurrentLink() {
   const link = location.href;
   if (navigator.clipboard) {
     navigator.clipboard.writeText(link)
-      .then(() => showToast('Link copied to clipboard'))
-      .catch(() => showToast('Copy failed — check browser permissions'));
+      .then(() => showToast(tr('Link copied to clipboard')))
+      .catch(() => showToast(tr('Copy failed — check browser permissions')));
   } else {
-    showToast('Clipboard unavailable in this browser');
+    showToast(tr('Clipboard unavailable in this browser'));
   }
 }
 

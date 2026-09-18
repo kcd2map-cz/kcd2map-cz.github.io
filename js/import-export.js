@@ -5,16 +5,16 @@
 async function clearMyMarkers() {
   const markers = userMarkers[currentRegion] || [];
   if (markers.length === 0) {
-    showToast('No markers to clear');
+    showToast(tr('No markers to clear'));
     return;
   }
-  if (!(await showConfirm(`Delete all ${markers.length} custom markers for ${currentRegion}? This cannot be undone.`, {title:'Clear my markers', confirmText:'Delete all', danger:true}))) return;
+  if (!(await showConfirm(tf('Delete all {0} for {1}? This cannot be undone.', `${markers.length} custom markers`, currentRegion), {title: tr('Clear my markers'), confirmText: tr('Delete all'), danger:true}))) return;
 
   userMarkers[currentRegion] = [];
   saveUserMarkersToStorage();
   userMarkerLayer.clearLayers();
   renderMyMarkersList();
-  showToast('All custom markers cleared');
+  showToast(tr('All custom markers cleared'));
 }
 
 // ── Progress ──
@@ -23,10 +23,10 @@ async function clearProgress() {
   const set = discoveredMarkers[currentRegion];
   const count = set ? set.size : 0;
   if (count === 0) {
-    showToast('No progress to clear');
+    showToast(tr('No progress to clear'));
     return;
   }
-  if (!(await showConfirm(`Reset ${count} discovered markers for ${currentRegion}? This cannot be undone.`, {title:'Clear progress', confirmText:'Reset', danger:true}))) return;
+  if (!(await showConfirm(tf('Reset {0} for {1}? This cannot be undone.', `${count} discovered markers`, currentRegion), {title: tr('Clear progress'), confirmText: tr('Reset'), danger:true}))) return;
 
   discoveredMarkers[currentRegion] = new Set();
   saveDiscoveredToStorage();
@@ -41,7 +41,7 @@ async function clearProgress() {
 
   renderCategoryList(document.getElementById('search-input')?.value || '');
   updateGameProgress();
-  showToast('All progress cleared');
+  showToast(tr('All progress cleared'));
 }
 
 
@@ -76,7 +76,7 @@ function exportAll() {
     + Object.values(allData.markerDeletes).reduce((s, a) => s + (a ? a.length : 0), 0);
 
   if (totalMarkers === 0 && totalDiscovered === 0 && totalLabelPos === 0 && totalMarkerEdits === 0) {
-    showToast('No data to export');
+    showToast(tr('No data to export'));
     return;
   }
 
@@ -85,7 +85,7 @@ function exportAll() {
   a.href = URL.createObjectURL(blob);
   a.download = `kcd2_backup_${new Date().toISOString().slice(0, 10)}.json`;
   a.click();
-  showToast(`Exported ${totalMarkers} markers + ${totalDiscovered} discoveries${totalLabelPos ? ` + ${totalLabelPos} label positions` : ''}`);
+  showToast(tf('Exported {0} + {1}{2}', `${totalMarkers} markers`, `${totalDiscovered} discoveries`, totalLabelPos ? ` + ${totalLabelPos} label positions` : ''));
 }
 
 function showImportAllModal() {
@@ -114,7 +114,7 @@ function loadImportAllFile(event) {
 async function importAll() {
   try {
     const raw = document.getElementById('import-all-data').value.trim();
-    if (!raw) { showToast('No data to import'); return; }
+    if (!raw) { showToast(tr('No data to import')); return; }
     const data = JSON.parse(raw);
 
     // Guard against a parseable-but-wrong file silently wiping everything:
@@ -122,11 +122,11 @@ async function importAll() {
     const KNOWN_KEYS = ['userMarkers', 'discoveredMarkers', 'labelPositions',
       'activeCategories', 'markerEdits', 'markerDeletes'];
     if (!data || typeof data !== 'object' || !KNOWN_KEYS.some(k => k in data)) {
-      showToast('Unrecognized backup file — nothing imported');
+      showToast(tr('Unrecognized backup file — nothing imported'));
       return;
     }
 
-    if (!(await showConfirm('This will replace all your current markers, progress, settlement-name positions, category filters, and marker edits. Continue?', {title:'Import all data', confirmText:'Replace'}))) return;
+    if (!(await showConfirm(tr('This will replace all your current markers, progress, settlement-name positions, category filters, and marker edits. Continue?'), {title: tr('Import all data'), confirmText: tr('Replace')}))) return;
 
     let markerCount = 0;
     let discoveredCount = 0;
@@ -183,10 +183,10 @@ async function importAll() {
     await loadRegion(currentRegion);
 
     closeImportAllModal();
-    showToast(`Imported ${markerCount} markers + ${discoveredCount} discoveries${labelPosCount ? ` + ${labelPosCount} label positions` : ''}`);
+    showToast(tf('Imported {0} + {1}{2}', `${markerCount} markers`, `${discoveredCount} discoveries`, labelPosCount ? ` + ${labelPosCount} label positions` : ''));
   } catch (e) {
     console.error('Import all error:', e);
-    showToast('Invalid JSON data');
+    showToast(tr('Invalid JSON data'));
   }
 }
 

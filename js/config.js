@@ -48,6 +48,41 @@ function escapeHtml(s) {
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
+// Czech UI translation lookup. English is the source of truth; when the language
+// is Čeština a matching key in window.UI_CS (data/ui_strings_cs.js) wins, otherwise
+// the English string is returned unchanged. Call it on any user-facing text.
+function tr(en) {
+  if (currentLang === 'cs' && window.UI_CS && Object.prototype.hasOwnProperty.call(window.UI_CS, en)) {
+    return window.UI_CS[en];
+  }
+  return en;
+}
+
+// Czech plural phrase: 1 → one, 2–4 → few, else many (Czech 12–14 exception).
+// e.g. plPhrase(n, 'marker', 'markery', 'markerů').
+function plPhrase(n, one, few, many) {
+  n = Math.abs(Math.round(Number(n) || 0));
+  if (n === 1) return one;
+  const d10 = n % 10, d100 = n % 100;
+  if (d10 >= 2 && d10 <= 4 && !(d100 >= 12 && d100 <= 14)) return few;
+  return many;
+}
+
+// Interpolated translate: tr(en) with {0}…{n} placeholders filled by the args,
+// so "Renamed to \"{0}\"" → "Přejmenováno na „{0}“" → "Přejmenováno na „X“".
+// Every {i} occurrence is replaced (split+join), so a region can repeat.
+function tf(en, ...args) {
+  let out = tr(en);
+  args.forEach((a, i) => { out = out.split(`{${i}}`).join(String(a)); });
+  return out;
+}
+
+// Display name of a region id: 'trosky' → 'Trosky', 'kuttenberg' → 'Kuttenberg'.
+function regionLabel(r) {
+  r = r || currentRegion;
+  return r.charAt(0).toUpperCase() + r.slice(1);
+}
+
 
 // ═══════════════════════════════════════════════
 // ██ STATE

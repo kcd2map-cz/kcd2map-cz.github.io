@@ -3,7 +3,18 @@
 // ═══════════════════════════════════════════════
 
 let showSettlementLabels = true;
-let settlementLabelMarkers = [];  // { marker, x, y } — for show/hide over local maps
+let settlementLabelMarkers = [];  // { marker, x, y, name } — for show/hide + language refresh
+
+// Display name for a settlement label. When Čeština is active the English name
+// (the key in data/settlement_labels) swaps to its Czech counterpart from
+// data/settlement_names_cs.js; banners, saved drag positions, and the exported
+// data files all keep using the English key.
+function localizedSettlementName(name) {
+  if (currentLang === 'cs' && window.SETTLEMENT_NAME_CS && Object.prototype.hasOwnProperty.call(window.SETTLEMENT_NAME_CS, name)) {
+    return window.SETTLEMENT_NAME_CS[name];
+  }
+  return name;
+}
 
 // Town crest accompanying each settlement name → banners/<file>.png.
 // Kept separate from SETTLEMENT_LABELS so the positioning tool's export doesn't drop it.
@@ -43,7 +54,7 @@ function renderSettlementLabels(region) {
     const crestHtml = crest ? `<img class="sl-crest"${crestStyle} src="banners/${crest}.png" alt="" onerror="this.style.display='none'">` : '';
     const icon = L.divIcon({
       className: 'settlement-label' + (labelEditing ? ' label-draggable' : ''),
-      html: `<span class="sl-stack">${crestHtml}<span class="sl-name">${label.name}</span></span>`,
+      html: `<span class="sl-stack">${crestHtml}<span class="sl-name">${localizedSettlementName(label.name)}</span></span>`,
       iconSize: null,
       iconAnchor: [0, 0],
     });
@@ -58,11 +69,11 @@ function renderSettlementLabels(region) {
         const ll = marker.getLatLng();
         const x = Math.round(ll.lng), y = Math.round(ll.lat);
         saveLabelPosition(region, label.name, x, y);
-        showToast(`${label.name} → X:${x} Y:${y}`);
+        showToast(`${localizedSettlementName(label.name)} → X:${x} Y:${y}`);
       });
     }
     marker.addTo(settlementLabelLayer);
-    settlementLabelMarkers.push({ marker, x: pos.x, y: pos.y });
+    settlementLabelMarkers.push({ marker, x: pos.x, y: pos.y, name: label.name });
   });
 
   if (showSettlementLabels || labelEditing) {
@@ -70,6 +81,18 @@ function renderSettlementLabels(region) {
   }
   updateLabelScale();
   updateSettlementLabelVisibility();
+}
+
+// Re-point settlement label text after the language switcher changes. Labels live
+// in cached Leaflet div-icons, so names update in place without a rebuild (drag
+// state, z-index and visibility all survive).
+function refreshSettlementLabelLanguage() {
+  settlementLabelMarkers.forEach(({ marker, name }) => {
+    const el = marker.getElement();
+    if (!el) return;
+    const nameEl = el.querySelector('.sl-name');
+    if (nameEl) nameEl.textContent = localizedSettlementName(name);
+  });
 }
 
 // QOL: hide a settlement name once the local detail map for that town is showing

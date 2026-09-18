@@ -292,7 +292,10 @@ function onSearchInput(query) {
   // Search both POI markers and user markers
   const matches = [];
   regionMarkers.forEach(m => {
-    if (searchNorm(m.name).includes(q)) {
+    // Match the stored name AND its localized display name, so Čeština searches
+    // (e.g. "Královský gambit") find the quest either way.
+    const displayName = localizedMarkerName(m);
+    if (searchNorm(m.name).includes(q) || searchNorm(displayName).includes(q)) {
       matches.push({ ...m, source: 'poi' });
     }
   });
@@ -303,7 +306,7 @@ function onSearchInput(query) {
   });
 
   if (matches.length === 0) {
-    resultsEl.innerHTML = '<div class="search-no-results">No markers found</div>';
+    resultsEl.innerHTML = '<div class="search-no-results">' + tr('No markers found') + '</div>';
     resultsEl.classList.add('active');
     _setSearchExpanded(true);
     return;
@@ -318,15 +321,15 @@ function onSearchInput(query) {
       ? `<img src="${iconSrc}" onerror="this.style.display='none'">`
       : `<span style="width:18px;text-align:center;font-size:12px">${cat?.icon || '📌'}</span>`;
     const catName = cat ? cat.name : 'Custom';
-    const tag = m.source === 'user' ? ' (mine)' : '';
+    const tag = m.source === 'user' ? tr(' (mine)') : '';
     return `<div class="search-result-item" role="option" onclick="searchResultClick(${m.x}, ${m.y}, '${getMarkerKey(m)}')">
       ${iconHtml}
       <div>
-        <div class="sr-name">${escapeHtml(m.name)}</div>
+        <div class="sr-name">${escapeHtml(localizedMarkerName(m))}</div>
         <div class="sr-cat">${catName}${tag} — (${m.x}, ${m.y})</div>
       </div>
     </div>`;
-  }).join('') + (matches.length > 20 ? `<div style="padding:6px 10px;font-size:11px;color:var(--text-muted);text-align:center">+${matches.length - 20} more results</div>` : '');
+  }).join('') + (matches.length > 20 ? `<div style="padding:6px 10px;font-size:11px;color:var(--text-muted);text-align:center">${tf('+{0} more results', matches.length - 20)}</div>` : '');
   resultsEl.classList.add('active');
   _setSearchExpanded(true);
 }

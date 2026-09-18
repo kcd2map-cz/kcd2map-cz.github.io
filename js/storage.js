@@ -12,7 +12,7 @@ function safeSetItem(key, value) {
     return true;
   } catch (e) {
     console.warn('localStorage write failed for', key, e);
-    if (typeof showToast === 'function') showToast('Storage full — change not saved');
+    if (typeof showToast === 'function') showToast(tr('Storage full — change not saved'));
     return false;
   }
 }
@@ -133,7 +133,7 @@ function updateGameProgress() {
   const pctEl = document.getElementById('gp-pct');
   if (pctEl) pctEl.textContent = p.pct + '%';
   const detail = document.getElementById('gp-detail');
-  if (detail) detail.textContent = `${p.mainDone.toLocaleString()} / ${p.mainTotal.toLocaleString()} main quests`;
+  if (detail) detail.textContent = tf('{0} / {1} main quests', p.mainDone.toLocaleString(), p.mainTotal.toLocaleString());
   ['trosky', 'kuttenberg'].forEach(region => {
     const row = document.getElementById('gp-' + region + '-row');
     if (row) row.classList.toggle('active', region === currentRegion);

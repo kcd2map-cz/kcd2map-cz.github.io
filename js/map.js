@@ -103,7 +103,7 @@ function attachMapEventHandlers() {
 
 function updateZoomDisplay() {
   const el = document.getElementById('zoom-display');
-  if (el && map) el.textContent = `Zoom ${+map.getZoom().toFixed(2)}`;
+  if (el && map) el.textContent = tf('Zoom {0}', +map.getZoom().toFixed(2));
 }
 
 function onMouseMove(e) {
@@ -279,7 +279,7 @@ async function loadRegion(region, opts = {}) {
       } else {
         console.error(`[KCD2 Map] No marker data found for ${region}`);
         allMarkerData[region] = { categories: [], markers: [] };
-        if (typeof showToast === 'function') showToast(`Could not load markers for ${region} — check your connection`);
+        if (typeof showToast === 'function') showToast(tf('Could not load markers for {0} — check your connection', region));
       }
     }
   }

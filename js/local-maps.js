@@ -20,7 +20,7 @@ function ensureSoleTool(targetId) {
     const el = document.getElementById(t.id);
     if (t.id !== targetId && el && el.classList.contains('active')) {
       el.classList.remove('tool-flash'); void el.offsetWidth; el.classList.add('tool-flash');
-      showToast(`Close "${t.name}" first — save/export your changes, then click ✓ Done.`);
+      showToast(tf('Close "{0}" first — save/export your changes, then click ✓ Done.', tr(t.name)));
       return false;
     }
   }
@@ -35,7 +35,8 @@ function calOpen() {
   // Populate dropdown with current region's local maps
   const select = document.getElementById('cal-select');
   const maps = localMapsConfig[currentRegion] || [];
-  select.innerHTML = '<option value="">— Select —</option>';
+  const sel = tr('— Select —');
+  select.innerHTML = `<option value="">${sel}</option>`;
   maps.forEach((cfg, i) => {
     select.innerHTML += `<option value="${i}">${cfg.name}</option>`;
   });
@@ -102,7 +103,7 @@ function calSelectMap(indexStr) {
   if (indexStr === '') {
     calActiveOverlay = null;
     calBounds = null;
-    document.getElementById('cal-bounds').textContent = 'Select a map to calibrate';
+    document.getElementById('cal-bounds').textContent = tr('Select a map to calibrate');
     return;
   }
 
@@ -232,14 +233,14 @@ function calCopyBounds() {
   // Copy just the current overlay bounds
   const text = document.getElementById('cal-bounds').textContent;
   navigator.clipboard.writeText(text).then(() => {
-    showToast('Bounds copied to clipboard');
+    showToast(tr('Bounds copied to clipboard'));
   }).catch(() => {
     const el = document.getElementById('cal-bounds');
     const range = document.createRange();
     range.selectNodeContents(el);
     window.getSelection().removeAllRanges();
     window.getSelection().addRange(range);
-    showToast('Select and copy the bounds manually');
+    showToast(tr('Select and copy the bounds manually'));
   });
 }
 
@@ -275,7 +276,7 @@ function calExportConfig() {
   a2.download = 'local_maps.js';
   setTimeout(() => a2.click(), 100);
 
-  showToast('Exported local_maps.json + local_maps.js — put both in data/');
+  showToast(tr('Exported local_maps.json + local_maps.js — put both in data/'));
 }
 
 

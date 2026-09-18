@@ -101,6 +101,8 @@
     align-self: center;
     border-radius: 4px;
   }
+  /* Markers tab holds the brand crest — keep it more compact so the rail isn't too tall */
+  #rail-markers { padding: 2px 0; }
   /* Brand crest that links out (e.g. the KCD1 map) — wraps the image as a button */
   .rail-brand-link {
     display: flex; align-items: center; justify-content: center;

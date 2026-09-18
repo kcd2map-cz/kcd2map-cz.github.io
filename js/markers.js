@@ -27,6 +27,17 @@ function createMarkerIcon(emoji, color, size = 28, categoryId = '', glowColor = 
   });
 }
 
+// Display name for a POI marker. Main-story quests (§ quest_main) show their
+// Czech name when the map language is Čeština — the stored data stays English so
+// edits, exports and the quests-en.txt/quests-cz.txt pairing never drift.
+// Falls back to the stored name (e.g. user-renamed markers, unknown quests).
+function localizedMarkerName(m) {
+  if (m && currentLang === 'cs' && m.category === 'quest_main' && window.QUEST_NAME_CS) {
+    return window.QUEST_NAME_CS[m.name] || m.name;
+  }
+  return m ? m.name : '';
+}
+
 function addPoiMarker(markerData) {
   const cat = categoriesById[markerData.category];
   if (!cat) {
@@ -36,12 +47,12 @@ function addPoiMarker(markerData) {
 
   const icon = createMarkerIcon(cat.icon, cat.color, 28, cat.id, categoryGroupColor(cat.id));
   const marker = L.marker([markerData.y, markerData.x], { icon, draggable: true });
-  marker.bindTooltip(escapeHtml(markerData.name), { direction: 'top', offset: [0, -16], opacity: 0.95, className: 'poi-tooltip' });
+  marker.bindTooltip(escapeHtml(localizedMarkerName(markerData)), { direction: 'top', offset: [0, -16], opacity: 0.95, className: 'poi-tooltip' });
 
   const markerKey = getMarkerKey(markerData);
   const isItem = ITEM_CATEGORIES.has(markerData.category);
-  const doneLabel = isItem ? '✓ Collected' : '✓ Discovered';
-  const undoneLabel = isItem ? '☐ Mark as Collected' : '☐ Mark as Discovered';
+  const doneLabel = isItem ? tr('✓ Collected') : tr('✓ Discovered');
+  const undoneLabel = isItem ? tr('☐ Mark as Collected') : tr('☐ Mark as Discovered');
   const btnId = `prog-${markerKey.replace(/[^a-zA-Z0-9]/g, '_')}`;
 
   marker.on('popupopen', () => updateHashWithMarker(markerKey));
@@ -83,6 +94,22 @@ function addPoiMarker(markerData) {
 
   if (markerLayers[cat.id]) {
     markerLayers[cat.id].addLayer(marker);
+  }
+}
+
+// Re-point quest tooltips + the open popup after the language switcher changes —
+// markers live in cached Leaflet layers, so names update in place without a rebuild.
+function refreshQuestMarkerLanguage() {
+  Object.values(markersByKey).forEach(m => {
+    const p = m._poi;
+    if (!p || p.category !== 'quest_main') return;
+    if (m.getTooltip()) m.setTooltipContent(escapeHtml(localizedMarkerName(p)));
+  });
+  // The popup content is built lazily (bindPopup fn) — re-evaluate it live so an
+  // open quest popup switches language without being reopened.
+  if (map && map._popup && map._popup.isOpen()) {
+    const src = map._popup._source;
+    if (src && src._poi && src._poi.category === 'quest_main') map._popup.update();
   }
 }
 
@@ -179,34 +206,34 @@ function poiPopupHtml(markerData, cat, markerKey, btnId, doneLabel, undoneLabel)
       .join('');
     return `<div class="popup-category">${cat.name}</div>
       <div class="marker-form" style="min-width:210px;">
-        <label>Marker name</label>
+        <label>${tr('Marker name')}</label>
         <input type="text" id="poi-edit-name" value="${safeName}">
-        <label style="margin-top:6px;">Category</label>
+        <label style="margin-top:6px;">${tr('Category')}</label>
         <select id="poi-edit-cat">${catOptions}</select>
         <div class="popup-coords" style="margin-top:6px;">X: ${markerData.x} &nbsp; Y: ${markerData.y}</div>
-        <div style="color:var(--text-muted);font-size:11px;margin-top:4px;">✥ Drag the marker on the map to reposition it.</div>
+        <div style="color:var(--text-muted);font-size:11px;margin-top:4px;">${tr('✥ Drag the marker on the map to reposition it.')}</div>
         <div class="form-actions">
-          <button class="btn btn-del" onclick="deletePoiMarker('${markerKey}')">🗑 Delete</button>
-          <button class="btn btn-save" onclick="savePoiMarkerName('${markerKey}')">Save</button>
+          <button class="btn btn-del" onclick="deletePoiMarker('${markerKey}')">🗑 ${tr('Delete')}</button>
+          <button class="btn btn-save" onclick="savePoiMarkerName('${markerKey}')">${tr('Save')}</button>
         </div>
       </div>`;
   }
   const discovered = isMarkerDiscovered(markerData);
-  return `<div class="popup-title">${escapeHtml(markerData.name)}</div>
+  return `<div class="popup-title">${escapeHtml(localizedMarkerName(markerData))}</div>
     <div class="popup-category">${cat.name}</div>
     ${markerData.description ? `<div class="popup-desc">${escapeHtml(markerData.description)}</div>` : ''}
     <div class="popup-coords">X: ${markerData.x} &nbsp; Y: ${markerData.y}</div>
     <button class="popup-progress-btn${discovered ? ' completed' : ''}" id="${btnId}"
       data-done-label="${doneLabel}" data-undone-label="${undoneLabel}"
       onclick="toggleMarkerDiscovered('${markerKey}', '${btnId}')">${discovered ? doneLabel : undoneLabel}</button>
-    <button class="popup-link-btn" onclick="copyCurrentLink()" title="Copy a link to this marker">🔗 Copy link</button>`;
+    <button class="popup-link-btn" onclick="copyCurrentLink()" title="${tr('Copy link')}">🔗 ${tr('Copy link')}</button>`;
 }
 
 function savePoiMarkerName(key) {
   const input = document.getElementById('poi-edit-name');
   if (!input) return;
   const newName = input.value.trim();
-  if (!newName) { showToast('Name cannot be empty'); return; }
+  if (!newName) { showToast(tr('Name cannot be empty')); return; }
   const marker = markersByKey[key];
   const catSel = document.getElementById('poi-edit-cat');
   const newCat = catSel ? catSel.value : null;
@@ -231,7 +258,7 @@ function savePoiMarkerName(key) {
   }
   updateMarkerEditStatus();
   const catName = (categoriesById[newCat] || {}).name || newCat;
-  showToast(catChanged ? `Renamed & moved to "${catName}"` : `Renamed to "${newName}"`);
+  showToast(catChanged ? tf('Renamed & moved to "{0}"', catName) : tf('Renamed to "{0}"', newName));
 }
 
 function deletePoiMarker(key) {
@@ -248,7 +275,7 @@ function deletePoiMarker(key) {
     renderCategoryList(document.getElementById('search-input')?.value || '');
     updateMarkerEditStatus();
     updateGameProgress();
-    showToast('Marker deleted');
+    showToast(tr('Marker deleted'));
   });
 }
 
@@ -270,15 +297,16 @@ function updateMarkerEditStatus() {
   const total = renamed + moved + recat + deleted;
   if (total === 0) {
     el.className = 'me-status';
-    el.textContent = `No unsaved changes for ${currentRegion}`;
+    el.textContent = tf('No unsaved changes for {0}', currentRegion);
   } else {
     const parts = [];
-    if (renamed) parts.push(`${renamed} renamed`);
-    if (moved) parts.push(`${moved} moved`);
-    if (recat) parts.push(`${recat} recategorized`);
-    if (deleted) parts.push(`${deleted} deleted`);
+    if (renamed) parts.push(tf('{0} renamed', renamed));
+    if (moved) parts.push(tf('{0} moved', moved));
+    if (recat) parts.push(tf('{0} recategorized', recat));
+    if (deleted) parts.push(tf('{0} deleted', deleted));
+    const fmt = total === 1 ? '{0} unsaved change ({1})' : '{0} unsaved changes ({1})';
     el.className = 'me-status active';
-    el.textContent = `${total} unsaved change${total > 1 ? 's' : ''} (${parts.join(' · ')})`;
+    el.textContent = tf(fmt, total, parts.join(' · '));
   }
 }
 function markerEditOpen() {
@@ -302,10 +330,10 @@ function markerEditToggle() {
   if (map) map.closePopup();  // reopen in the right mode
   // Enable/disable drag-to-reposition on every marker currently on the map
   Object.values(markersByKey).forEach(m => { if (m.dragging) (markerEditing ? m.dragging.enable() : m.dragging.disable()); });
-  showToast(markerEditing ? 'Click a marker to rename/delete, or drag it to reposition' : 'Marker editing off');
+  showToast(markerEditing ? tr('Click a marker to rename/delete, or drag it to reposition') : tr('Marker editing off'));
 }
 function markerEditReset() {
-  showConfirm(`Discard all marker renames and deletions for ${currentRegion}? This restores them to the original data.`, { title: 'Reset marker edits', confirmText: 'Reset', danger: true }).then(ok => {
+  showConfirm(tf('Discard all marker renames and deletions for {0}? This restores them to the original data.', currentRegion), { title: tr('Reset marker edits'), confirmText: tr('Reset'), danger: true }).then(ok => {
     if (!ok) return;
     try {
       const edits = JSON.parse(localStorage.getItem(MARKER_EDIT_KEY) || '{}');
@@ -317,7 +345,7 @@ function markerEditReset() {
     } catch (e) {}
     loadRegion(currentRegion);  // rebuild from original data
     updateMarkerEditStatus();
-    showToast(`Marker edits reset for ${currentRegion}`);
+    showToast(tf('Marker edits reset for {0}', currentRegion));
   });
 }
 function markerEditExport() {
@@ -326,7 +354,7 @@ function markerEditExport() {
   markerDownload(`markers_${region}.json`, jsonStr, 'application/json');
   setTimeout(() => markerDownload(`markers_${region}.js`, jsStr, 'text/javascript'), 120);
   const { renamed, moved, recat, deleted } = markerEditCounts(region);
-  showToast(`Downloaded markers_${region}.{js,json} (${renamed} renamed, ${moved} moved, ${recat} recategorized, ${deleted} deleted) — move both into data/`);
+  showToast(tf('Downloaded markers_{0}.{js,json} ({1} renamed, {2} moved, {3} recategorized, {4} deleted) — move both into data/', region, renamed, moved, recat, deleted));
 }
 function markerDownload(filename, text, mime) {
   const blob = new Blob([text], { type: mime });
@@ -431,15 +459,15 @@ async function writeFileToDir(dirHandle, name, contents) {
 async function markerEditSaveToData() {
   const region = currentRegion;
   const { renamed, moved, recat, deleted } = markerEditCounts(region);
-  if (renamed + moved + recat + deleted === 0) { showToast(`No unsaved changes for ${region}`); return; }
+  if (renamed + moved + recat + deleted === 0) { showToast(tf('No unsaved changes for {0}', region)); return; }
   if (!window.showDirectoryPicker) {
-    showToast('Direct save needs Chrome/Edge over http://localhost — downloading instead');
+    showToast(tr('Direct save needs Chrome/Edge over http://localhost — downloading instead'));
     markerEditExport();
     return;
   }
   try {
     const dir = await ensureDataDir();
-    if (!dir) { showToast('Write permission denied'); return; }
+    if (!dir) { showToast(tr('Write permission denied')); return; }
     const { out, jsonStr, jsStr } = buildMarkerFiles(region);
     await writeFileToDir(dir, `markers_${region}.json`, jsonStr);
     await writeFileToDir(dir, `markers_${region}.js`, jsStr);
@@ -449,11 +477,11 @@ async function markerEditSaveToData() {
     clearRegionMarkerEdits(region);
     await loadRegion(region, { preserveView: true });  // rebuild so moved keys re-base cleanly
     updateMarkerEditStatus();
-    showToast(`Saved markers_${region}.{js,json} to data/ ✓ (${renamed} renamed, ${moved} moved, ${recat} recategorized, ${deleted} deleted)`);
+    showToast(tf('Saved markers_{0}.{js,json} to data/ ✓ ({1} renamed, {2} moved, {3} recategorized, {4} deleted)', region, renamed, moved, recat, deleted));
   } catch (e) {
     if (e && e.name === 'AbortError') return; // user cancelled the picker
     console.error('Save to data/ failed:', e);
-    showToast('Save failed — see console (F12)');
+    showToast(tr('Save failed — see console (F12)'));
   }
 }
 
@@ -479,14 +507,14 @@ function updatePromoteStatus() {
   const n = (userMarkers[currentRegion] || []).length;
   el.className = 'me-status' + (n ? ' active' : '');
   el.textContent = n
-    ? `${n} custom marker${n > 1 ? 's' : ''} in ${currentRegion} ready to embed`
-    : `No custom markers in ${currentRegion}`;
+    ? tf('{0} in {1} ready to embed', `${n} custom marker${n > 1 ? 's' : ''}`, currentRegion)
+    : tf('No custom markers in {0}', currentRegion);
 }
 
 async function promoteUserMarkers() {
   const region = currentRegion;
   const customs = userMarkers[region] || [];
-  if (customs.length === 0) { showToast(`No custom markers in ${region} to embed`); return; }
+  if (customs.length === 0) { showToast(tf('No custom markers in {0} to embed', region)); return; }
 
   // Skip any whose category:x:y already exists in the database (no duplicates).
   const existingKeys = new Set(getEditedMarkers(region).map(getMarkerKey));
@@ -497,15 +525,17 @@ async function promoteUserMarkers() {
     else { existingKeys.add(key); toAdd.push(m); }
   });
   if (toAdd.length === 0) {
-    showToast(`All ${customs.length} custom marker(s) already exist in the database`);
+    showToast(tf('All {0} already exist in the database', customs.length));
     return;
   }
 
   const ok = await showConfirm(
-    `Embed ${toAdd.length} custom marker${toAdd.length > 1 ? 's' : ''} from ${region} into the database` +
-    (skipped.length ? ` (${skipped.length} duplicate${skipped.length > 1 ? 's' : ''} kept in My Markers)` : '') +
-    `? They’ll be removed from My Markers and written into markers_${region}.{json,js} as permanent entries.`,
-    { title: 'Embed My Markers', confirmText: 'Embed & Save' }
+    tf('Embed {0} from {1} into the database{2}? They’ll be removed from My Markers and written into markers_{3}.{json,js} as permanent entries.',
+      `${toAdd.length} custom marker${toAdd.length > 1 ? 's' : ''}`,
+      region,
+      skipped.length ? ` (${skipped.length} duplicate${skipped.length > 1 ? 's' : ''} kept in My Markers)` : '',
+      region),
+    { title: tr('Embed My Markers'), confirmText: tr('Embed & Save') }
   );
   if (!ok) return;
 
@@ -515,7 +545,7 @@ async function promoteUserMarkers() {
   if (!window.showDirectoryPicker) {
     markerDownload(`markers_${region}.json`, jsonStr, 'application/json');
     setTimeout(() => markerDownload(`markers_${region}.js`, jsStr, 'text/javascript'), 120);
-    showToast(`Downloaded markers_${region}.{js,json} with ${toAdd.length} embedded — move into data/ & reload, then delete them from My Markers`);
+    showToast(tf('Downloaded markers_{0}.{js,json} with {1} embedded — move into data/ & reload, then delete them from My Markers', region, toAdd.length));
     return;
   }
   try {
@@ -533,11 +563,11 @@ async function promoteUserMarkers() {
     renderMyMarkersList();
     updateMarkerEditStatus();
     updatePromoteStatus();
-    showToast(`Embedded ${toAdd.length} marker${toAdd.length > 1 ? 's' : ''} into markers_${region} ✓`);
+    showToast(tf('Embedded {0} into markers_{1} ✓', `${toAdd.length} marker${toAdd.length > 1 ? 's' : ''}`, region));
   } catch (e) {
     if (e && e.name === 'AbortError') return;
     console.error('Embed to data/ failed:', e);
-    showToast('Embed failed — see console (F12)');
+    showToast(tr('Embed failed — see console (F12)'));
   }
 }
 
@@ -552,22 +582,22 @@ function userBtnId(markerData) {
 function buildUserMarkerPopup(markerData) {
   const cat = categoriesById[markerData.category];
   const isItem = ITEM_CATEGORIES.has(markerData.category);
-  const doneLabel = isItem ? '✓ Collected' : '✓ Discovered';
-  const undoneLabel = isItem ? '☐ Mark as Collected' : '☐ Mark as Discovered';
+  const doneLabel = isItem ? tr('✓ Collected') : tr('✓ Discovered');
+  const undoneLabel = isItem ? tr('☐ Mark as Collected') : tr('☐ Mark as Discovered');
   const key = getMarkerKey(markerData);
   const btnId = userBtnId(markerData);
   const discovered = isMarkerDiscovered(markerData);
   return `
-    <div class="popup-title">${escapeHtml(markerData.name) || 'Custom Marker'}</div>
-    <div class="popup-category">${cat ? cat.name : 'Custom'} — User Marker</div>
+    <div class="popup-title">${escapeHtml(markerData.name) || tr('Custom Marker')}</div>
+    <div class="popup-category">${cat ? cat.name : tr('Custom')} — ${tr('User Marker')}</div>
     ${markerData.description ? `<div class="popup-desc">${escapeHtml(markerData.description)}</div>` : ''}
     <div class="popup-coords">X: ${markerData.x} &nbsp; Y: ${markerData.y}</div>
     <button class="popup-progress-btn${discovered ? ' completed' : ''}" id="${btnId}"
       data-done-label="${doneLabel}" data-undone-label="${undoneLabel}"
       onclick="event.stopPropagation();toggleMarkerDiscovered('${key}', '${btnId}')">${discovered ? doneLabel : undoneLabel}</button>
     <div class="popup-actions">
-      <button class="popup-action-btn" onclick="event.stopPropagation();editUserMarker(${markerData.id})">✎ Edit</button>
-      <button class="popup-action-btn danger" onclick="event.stopPropagation();showConfirm('Delete this marker?',{title:'Delete marker',confirmText:'Delete',danger:true}).then(ok=>ok&&deleteUserMarker(${markerData.id}))">✕ Delete</button>
+      <button class="popup-action-btn" onclick="event.stopPropagation();editUserMarker(${markerData.id})">✎ ${tr('Edit')}</button>
+      <button class="popup-action-btn danger" onclick="event.stopPropagation();showConfirm('Delete this marker?',{title:'Delete marker',confirmText:'Delete',danger:true}).then(ok=>ok&&deleteUserMarker(${markerData.id}))">✕ ${tr('Delete')}</button>
     </div>
   `;
 }

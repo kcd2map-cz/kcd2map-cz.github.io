@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="KCD2 Interactive Map">
 <meta name="twitter:description" content="Interactive POI/loot/quest map for Kingdom Come: Deliverance II with progress tracking.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
-<link rel="stylesheet" href="style.css?v=2026-09-05">
+<link rel="stylesheet" href="style.css?v=2026-09-18">
 </head>
 <body>
 
@@ -35,23 +35,22 @@
 <div id="sidebar">
   <!-- Vertical icon rail — toggles between Markers, My Markers and Tools -->
   <div id="side-rail" role="tablist" aria-label="Sidebar sections" aria-orientation="vertical">
-    <img class="rail-brand" src="main_icon.png" alt="Kingdom Come: Deliverance II">
-    <button class="rail-btn active" id="rail-markers" role="tab" aria-selected="true" onclick="switchSide('markers')" title="Markers" aria-label="Markers">
-      <svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    <button class="rail-btn active" id="rail-markers" role="tab" aria-selected="true" onclick="switchSide('markers')" title="Markers" aria-label="Markers" data-i18n="Markers" data-i18n-attr="title,aria-label">
+      <img class="rail-brand" src="main_icon.png" alt="Kingdom Come: Deliverance II">
     </button>
-    <button class="rail-btn" id="rail-info" role="tab" aria-selected="false" onclick="switchSide('info')" title="Info" aria-label="Info">
+    <button class="rail-btn" id="rail-info" role="tab" aria-selected="false" onclick="switchSide('info')" title="Info" aria-label="Info" data-i18n="Info" data-i18n-attr="title,aria-label">
       <svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
     </button>
-    <button class="rail-btn" id="rail-mymarkers" role="tab" aria-selected="false" onclick="switchSide('mymarkers')" title="My Markers" aria-label="My Markers">
+    <button class="rail-btn" id="rail-mymarkers" role="tab" aria-selected="false" onclick="switchSide('mymarkers')" title="My Markers" aria-label="My Markers" data-i18n="My Markers" data-i18n-attr="title,aria-label">
       <svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
     </button>
-    <button class="rail-btn" id="rail-tools" role="tab" aria-selected="false" onclick="switchSide('tools')" title="Tools" aria-label="Tools">
+    <button class="rail-btn" id="rail-tools" role="tab" aria-selected="false" onclick="switchSide('tools')" title="Tools" aria-label="Tools" data-i18n="Tools" data-i18n-attr="title,aria-label">
       <svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
     </button>
-    <a class="rail-brand rail-brand-link" href="https://kcdmap-cz.github.io" title="KCD1 Map" aria-label="KCD1 Map">
+    <a class="rail-brand rail-brand-link" href="https://kcdmap-cz.github.io" title="KCD1 Map" aria-label="KCD1 Map" data-i18n="KCD1 Map" data-i18n-attr="title,aria-label">
       <img src="kcd1_icon.png" alt="KCD1 Map">
     </a>
-    <button class="rail-btn rail-collapse" id="rail-collapse" role="button" onclick="toggleSidebar()" title="Collapse sidebar" aria-label="Collapse sidebar" aria-expanded="true">
+    <button class="rail-btn rail-collapse" id="rail-collapse" role="button" onclick="toggleSidebar()" title="Collapse sidebar" aria-label="Collapse sidebar" aria-expanded="true" data-i18n="Collapse sidebar" data-i18n-attr="title,aria-label">
       <svg class="ui-icon collapse-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
   </div>
@@ -59,16 +58,16 @@
   <!-- ══ MARKERS PANEL (default view) ══ -->
   <div class="side-panel active" id="side-panel-markers">
     <div class="sidebar-header">
-      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-05" alt="Kingdom Come: Deliverance II">
-      <div class="sb-tagline">Interactive Map</div>
+      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-18" alt="Kingdom Come: Deliverance II">
+      <div class="sb-tagline" data-i18n="Interactive Map">Interactive Map</div>
     </div>
 
     <!-- Region Switcher — sliding segmented control -->
     <div class="region-section">
-      <div class="region-eyebrow">Region</div>
+      <div class="region-eyebrow" data-i18n="Region">Region</div>
       <div class="region-switcher" role="group" aria-label="Map region">
         <button class="region-btn active" data-region="trosky" aria-pressed="true" onclick="switchRegion('trosky')">Trosky</button>
-        <button class="region-btn" data-region="kuttenberg" aria-pressed="false" onclick="switchRegion('kuttenberg')">Kuttenberg</button>
+        <button class="region-btn" data-region="kuttenberg" aria-pressed="false" onclick="switchRegion('kuttenberg')" data-i18n="Kuttenberg">Kuttenberg</button>
       </div>
     </div>
 
@@ -76,8 +75,8 @@
     <div class="search-box">
       <div class="search-field">
         <svg class="search-icon ui-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        <input type="text" class="search-input" id="search-input" role="combobox" aria-label="Search markers by name" aria-controls="search-results" aria-autocomplete="list" aria-expanded="false" placeholder="Search markers by name..." oninput="onSearchInput(this.value)" onfocus="onSearchInput(this.value)">
-        <button type="button" class="search-clear" id="search-clear" aria-label="Clear search" hidden onclick="clearSearch()">
+        <input type="text" class="search-input" id="search-input" role="combobox" aria-label="Search markers by name" aria-controls="search-results" aria-autocomplete="list" aria-expanded="false" placeholder="Search markers by name..." oninput="onSearchInput(this.value)" onfocus="onSearchInput(this.value)" data-i18n="Search markers by name..." data-i18n-attr="placeholder,aria-label">
+        <button type="button" class="search-clear" id="search-clear" aria-label="Clear search" hidden onclick="clearSearch()" data-i18n="Clear search" data-i18n-attr="aria-label">
           <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
         </button>
       </div>
@@ -89,11 +88,11 @@
       <div class="category-controls">
         <button class="cat-ctrl-btn" onclick="toggleAllCategories(true)">
           <svg class="ui-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
-          <span>Show All</span>
+          <span data-i18n="Show All">Show All</span>
         </button>
         <button class="cat-ctrl-btn" onclick="toggleAllCategories(false)">
           <svg class="ui-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 002.8 2.8"/><path d="M9.4 5.4A9.7 9.7 0 0112 5c5 0 8.5 4 9.5 7-.4 1.2-1.2 2.6-2.4 3.8"/><path d="M6.5 6.6C4.3 8 2.9 10 2.5 12c1 3 4.5 7 9.5 7 1 0 2-.2 2.9-.5"/></svg>
-          <span>Hide All</span>
+          <span data-i18n="Hide All">Hide All</span>
         </button>
       </div>
       <div class="category-list" id="category-list"></div>
@@ -103,22 +102,22 @@
   <!-- ══ INFO PANEL — game completion, map view options, region switcher & about ══ -->
   <div class="side-panel" id="side-panel-info">
     <div class="sidebar-header">
-      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-05" alt="Kingdom Come: Deliverance II">
-      <div class="sb-tagline">Interactive Map</div>
+      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-18" alt="Kingdom Come: Deliverance II">
+      <div class="sb-tagline" data-i18n="Interactive Map">Interactive Map</div>
     </div>
     <div class="side-scroll">
       <!-- Region Switcher — sliding segmented control -->
       <div class="region-section">
-        <div class="region-eyebrow">Region</div>
+        <div class="region-eyebrow" data-i18n="Region">Region</div>
         <div class="region-switcher" role="group" aria-label="Map region">
           <button class="region-btn active" data-region="trosky" aria-pressed="true" onclick="switchRegion('trosky')">Trosky</button>
-          <button class="region-btn" data-region="kuttenberg" aria-pressed="false" onclick="switchRegion('kuttenberg')">Kuttenberg</button>
+          <button class="region-btn" data-region="kuttenberg" aria-pressed="false" onclick="switchRegion('kuttenberg')" data-i18n="Kuttenberg">Kuttenberg</button>
         </div>
       </div>
       <!-- Game Completion — quest progress across both regions -->
       <div class="game-progress" id="game-progress" title="Main & side quest completion across both regions">
         <button type="button" class="gp-header" aria-expanded="true" aria-controls="gp-body" onclick="toggleGameProgress(this)">
-          <span>Game Completion</span>
+          <span data-i18n="Game Completion">Game Completion</span>
           <span class="gp-header-end"><span id="gp-pct">0%</span></span>
         </button>
         <div class="gp-body" id="gp-body">
@@ -127,23 +126,23 @@
           <div class="gp-regions">
             <div class="gp-region" id="gp-trosky-row">
               <span class="gpr-name">Trosky</span>
-              <span class="gpr-quest" title="Main quests">
-                <img class="gpr-icon" src="icons/quest_main_red_icon.png?v=2026-09-05" alt="Main quests">
+              <span class="gpr-quest" title="Main quests" data-i18n="Main quests" data-i18n-attr="title">
+                <img class="gpr-icon" src="icons/quest_main_red_icon.png?v=2026-09-18" alt="Main quests" data-i18n="Main quests" data-i18n-attr="alt">
                 <span class="gpr-count" id="gp-trosky-main">0/0</span>
               </span>
-              <span class="gpr-quest" title="Side quests">
-                <img class="gpr-icon" src="icons/quest_side_red_icon.png?v=2026-09-05" alt="Side quests">
+              <span class="gpr-quest" title="Side quests" data-i18n="Side quests" data-i18n-attr="title">
+                <img class="gpr-icon" src="icons/quest_side_red_icon.png?v=2026-09-18" alt="Side quests" data-i18n="Side quests" data-i18n-attr="alt">
                 <span class="gpr-count" id="gp-trosky-side">0/0</span>
               </span>
             </div>
             <div class="gp-region" id="gp-kuttenberg-row">
-              <span class="gpr-name">Kuttenberg</span>
-              <span class="gpr-quest" title="Main quests">
-                <img class="gpr-icon" src="icons/quest_main_red_icon.png?v=2026-09-05" alt="Main quests">
+              <span class="gpr-name" data-i18n="Kuttenberg">Kuttenberg</span>
+              <span class="gpr-quest" title="Main quests" data-i18n="Main quests" data-i18n-attr="title">
+                <img class="gpr-icon" src="icons/quest_main_red_icon.png?v=2026-09-18" alt="Main quests" data-i18n="Main quests" data-i18n-attr="alt">
                 <span class="gpr-count" id="gp-kuttenberg-main">0/0</span>
               </span>
-              <span class="gpr-quest" title="Side quests">
-                <img class="gpr-icon" src="icons/quest_side_red_icon.png?v=2026-09-05" alt="Side quests">
+              <span class="gpr-quest" title="Side quests" data-i18n="Side quests" data-i18n-attr="title">
+                <img class="gpr-icon" src="icons/quest_side_red_icon.png?v=2026-09-18" alt="Side quests" data-i18n="Side quests" data-i18n-attr="alt">
                 <span class="gpr-count" id="gp-kuttenberg-side">0/0</span>
               </span>
             </div>
@@ -154,32 +153,32 @@
       <!-- Map view options — toggles are text-in-button chips -->
       <div class="map-options" id="map-options">
         <button type="button" class="mo-header" aria-expanded="true" aria-controls="mo-body" onclick="toggleMapOptions(this)">
-          <span>View</span>
+          <span data-i18n="View">View</span>
         </button>
         <div class="mo-body" id="mo-body">
           <label class="mo-chip">
             <input type="checkbox" id="toggle-labels" checked onchange="toggleSettlementLabels()">
             <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2.2 3.5L16 11H5"/></svg>
-            <span>Settlement names</span>
+            <span data-i18n="Settlement names">Settlement names</span>
           </label>
           <label class="mo-chip">
             <input type="checkbox" id="toggle-local-maps" checked onchange="toggleLocalMaps()">
             <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg>
-            <span>Detail maps</span>
+            <span data-i18n="Detail maps">Detail maps</span>
           </label>
           <label class="mo-chip">
             <input type="checkbox" id="toggle-hide-discovered" onchange="toggleHideDiscovered()">
             <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 002.8 2.8"/><path d="M9.4 5.4A9.7 9.7 0 0112 5c5 0 8.5 4 9.5 7-.4 1.2-1.2 2.6-2.4 3.8"/><path d="M6.5 6.6C4.3 8 2.9 10 2.5 12c1 3 4.5 7 9.5 7 1 0 2-.2 2.9-.5"/></svg>
-            <span>Hide discovered</span>
+            <span data-i18n="Hide discovered">Hide discovered</span>
           </label>
         </div>
       </div>
 
       <div class="tools-section">
-        <h3>About</h3>
+        <h3 data-i18n="About">About</h3>
         <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">
           KCD2 Interactive Map v1.0<br>
-          Built with Leaflet.js<br><br>
+          <span data-i18n="Built with Leaflet.js">Built with Leaflet.js</span><br><br>
           The Kingdom Come: Deliverance II logo, icons, and the map are copyright and property of
           <a href="https://warhorsestudios.cz/" style="color:var(--accent);">Warhorse Studios</a>.
         </p>
@@ -190,12 +189,12 @@
   <!-- ══ MY MARKERS PANEL ══ -->
   <div class="side-panel" id="side-panel-mymarkers">
     <div class="sidebar-header">
-      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-05" alt="Kingdom Come: Deliverance II">
-      <div class="sb-tagline">Interactive Map</div>
+      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-18" alt="Kingdom Come: Deliverance II">
+      <div class="sb-tagline" data-i18n="Interactive Map">Interactive Map</div>
     </div>
     <div class="side-scroll">
       <div class="my-markers-list" id="my-markers-list">
-        <div class="no-markers">Right-click on the map to add a custom marker.</div>
+        <div class="no-markers" data-i18n="Right-click on the map to add a custom marker.">Right-click on the map to add a custom marker.</div>
       </div>
     </div>
   </div>
@@ -203,8 +202,8 @@
   <!-- ══ TOOLS PANEL ══ -->
   <div class="side-panel" id="side-panel-tools">
     <div class="sidebar-header">
-      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-05" alt="Kingdom Come: Deliverance II">
-      <div class="sb-tagline">Interactive Map</div>
+      <img class="sb-logo" src="icons/brand/kcd2_logo.png?v=2026-09-18" alt="Kingdom Come: Deliverance II">
+      <div class="sb-tagline" data-i18n="Interactive Map">Interactive Map</div>
     </div>
     <div class="side-scroll">
       <!-- Language -->
@@ -221,56 +220,56 @@
         <button class="tool-btn" onclick="exportAll()" style="border-left: 3px solid var(--accent);">
           <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
           <span class="tool-txt">
-            <span class="tool-title">Export All Data</span>
-            <span class="tool-desc">Download markers, progress, label positions &amp; filters in one file</span>
+            <span class="tool-title" data-i18n="Export All Data">Export All Data</span>
+            <span class="tool-desc" data-i18n="Download markers, progress, label positions & filters in one file">Download markers, progress, label positions &amp; filters in one file</span>
           </span>
         </button>
         <button class="tool-btn" onclick="showImportAllModal()" style="border-left: 3px solid var(--accent);">
           <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
           <span class="tool-txt">
-            <span class="tool-title">Import All Data</span>
-            <span class="tool-desc">Restore everything from a backup file</span>
+            <span class="tool-title" data-i18n="Import All Data">Import All Data</span>
+            <span class="tool-desc" data-i18n="Restore everything from a backup file">Restore everything from a backup file</span>
           </span>
         </button>
       </div>
       <div class="tools-section">
-        <h3>Data Management</h3>
+        <h3 data-i18n="Data Management">Data Management</h3>
         <button class="tool-btn danger" onclick="clearMyMarkers()">
           <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
           <span class="tool-txt">
-            <span class="tool-title">Clear My Markers</span>
-            <span class="tool-desc">Remove all custom markers (cannot undo)</span>
+            <span class="tool-title" data-i18n="Clear My Markers">Clear My Markers</span>
+            <span class="tool-desc" data-i18n="Remove all custom markers (cannot undo)">Remove all custom markers (cannot undo)</span>
           </span>
         </button>
         <button class="tool-btn danger" onclick="clearProgress()">
           <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
           <span class="tool-txt">
-            <span class="tool-title">Clear Progress</span>
-            <span class="tool-desc">Reset all discovered/collected markers (cannot undo)</span>
+            <span class="tool-title" data-i18n="Clear Progress">Clear Progress</span>
+            <span class="tool-desc" data-i18n="Reset all discovered/collected markers (cannot undo)">Reset all discovered/collected markers (cannot undo)</span>
           </span>
         </button>
       </div>
       <div class="tools-section">
-        <h3>Developer Tools</h3>
+        <h3 data-i18n="Developer Tools">Developer Tools</h3>
         <button class="tool-btn" onclick="calOpen()">
           <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4M6 12H2M12 6V2M12 22v-4"/></svg>
           <span class="tool-txt">
-            <span class="tool-title">Calibrate Local Map</span>
-            <span class="tool-desc">Drag and resize a local map overlay to find correct bounds</span>
+            <span class="tool-title" data-i18n="Calibrate Local Map">Calibrate Local Map</span>
+            <span class="tool-desc" data-i18n="Drag and resize a local map overlay to find correct bounds">Drag and resize a local map overlay to find correct bounds</span>
           </span>
         </button>
         <button class="tool-btn" onclick="labelEditOpen()">
           <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9l-3 3 3 3"/><path d="M9 5l3-3 3 3"/><path d="M15 19l-3 3-3-3"/><path d="M19 9l3 3-3 3"/><path d="M2 12h20"/><path d="M12 2v20"/></svg>
           <span class="tool-txt">
-            <span class="tool-title">Position Settlement Names</span>
-            <span class="tool-desc">Drag each settlement name to reposition it, then export</span>
+            <span class="tool-title" data-i18n="Position Settlement Names">Position Settlement Names</span>
+            <span class="tool-desc" data-i18n="Drag each settlement name to reposition it, then export">Drag each settlement name to reposition it, then export</span>
           </span>
         </button>
         <button class="tool-btn" onclick="markerEditOpen()">
           <svg class="tool-icon ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.83 2.83 0 014 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
           <span class="tool-txt">
-            <span class="tool-title">Edit Markers</span>
-            <span class="tool-desc">Click a marker to rename or delete it, then export</span>
+            <span class="tool-title" data-i18n="Edit Markers">Edit Markers</span>
+            <span class="tool-desc" data-i18n="Click a marker to rename or delete it, then export">Click a marker to rename or delete it, then export</span>
           </span>
         </button>
       </div>
@@ -286,17 +285,17 @@
 <div id="map-container">
   <div id="map"></div>
   <div id="map-controls">
-    <button onclick="resetView()" title="Reset view to whole region" aria-label="Reset view">⌂</button>
-    <button onclick="toggleFullscreen()" title="Toggle fullscreen" aria-label="Toggle fullscreen">⛶</button>
-    <button onclick="copyCurrentLink()" title="Copy a link to this view" aria-label="Copy link to this view">🔗</button>
+    <button onclick="resetView()" title="Reset view to whole region" aria-label="Reset view to whole region" data-i18n="Reset view to whole region" data-i18n-text="off" data-i18n-attr="title,aria-label">⌂</button>
+    <button onclick="toggleFullscreen()" title="Toggle fullscreen" aria-label="Toggle fullscreen" data-i18n="Toggle fullscreen" data-i18n-text="off" data-i18n-attr="title,aria-label">⛶</button>
+    <button onclick="copyCurrentLink()" title="Copy a link to this view" aria-label="Copy a link to this view" data-i18n="Copy a link to this view" data-i18n-text="off" data-i18n-attr="title,aria-label">🔗</button>
   </div>
   <div id="map-hint">
-    <span>Tip: <b>right-click</b> anywhere on the map to add your own marker.</span>
-    <button onclick="dismissMapHint()" aria-label="Dismiss hint">Got it</button>
+    <span data-i18n="Tip: <b>right-click</b> anywhere on the map to add your own marker." data-i18n-html="Tip: <b>right-click</b> anywhere on the map to add your own marker.">Tip: <b>right-click</b> anywhere on the map to add your own marker.</span>
+    <button onclick="dismissMapHint()" aria-label="Got it" data-i18n="Got it" data-i18n-attr="aria-label">Got it</button>
   </div>
   <div id="zoom-display">Zoom 0</div>
   <div id="coords-display">X: 0 &nbsp; Y: 0</div>
-  <button id="legend-btn" onclick="toggleLegend()" title="Show icon legend">🗝️ Legend</button>
+  <button id="legend-btn" onclick="toggleLegend()" title="Show icon legend" data-i18n="Show icon legend" data-i18n-attr="title">🗝️ <span data-i18n="Legend">Legend</span></button>
   <div id="legend-panel"><div id="legend-content"></div></div>
 </div>
 
@@ -306,15 +305,15 @@
 <!-- Import All Modal -->
 <div class="modal-overlay" id="import-all-modal" onkeydown="_trapModalTab(event, this)">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="import-all-title">
-    <h2 id="import-all-title">Import All Data</h2>
-    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">
+    <h2 id="import-all-title" data-i18n="Import All Data">Import All Data</h2>
+    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;" data-i18n="Restore markers, progress, settlement-name positions and category filters from a backup file. This will <strong>replace</strong> your current data." data-i18n-html="Restore markers, progress, settlement-name positions and category filters from a backup file. This will <strong>replace</strong> your current data.">
       Restore markers, progress, settlement-name positions and category filters from a backup file. This will <strong>replace</strong> your current data.
     </p>
     <input type="file" id="import-all-file" accept=".json" style="margin-bottom:10px;font-size:13px;color:var(--text-secondary);" onchange="loadImportAllFile(event)">
     <textarea id="import-all-data" placeholder='{"userMarkers":{...},"discoveredMarkers":{...},"labelPositions":{...},"activeCategories":[...]}'></textarea>
     <div class="form-actions">
-      <button class="btn btn-secondary" onclick="closeImportAllModal()">Cancel</button>
-      <button class="btn btn-primary" onclick="importAll()">Import</button>
+      <button class="btn btn-secondary" onclick="closeImportAllModal()" data-i18n="Cancel">Cancel</button>
+      <button class="btn btn-primary" onclick="importAll()" data-i18n="Import">Import</button>
     </div>
   </div>
 </div>
@@ -322,81 +321,81 @@
 <!-- Confirm Dialog -->
 <div class="modal-overlay" id="confirm-modal" onclick="if(event.target===this)_confirmClose(false)" onkeydown="_trapModalTab(event, this)">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title" style="max-width:380px;">
-    <h2 id="confirm-title">Are you sure?</h2>
+    <h2 id="confirm-title" data-i18n="Are you sure?">Are you sure?</h2>
     <p id="confirm-message" style="font-size:13px;color:var(--text-secondary);line-height:1.5;margin-bottom:4px;"></p>
     <div class="form-actions">
-      <button class="btn btn-secondary" onclick="_confirmClose(false)">Cancel</button>
-      <button class="btn btn-primary" id="confirm-ok" onclick="_confirmClose(true)">Confirm</button>
+      <button class="btn btn-secondary" onclick="_confirmClose(false)" data-i18n="Cancel">Cancel</button>
+      <button class="btn btn-primary" id="confirm-ok" onclick="_confirmClose(true)" data-i18n="Confirm">Confirm</button>
     </div>
   </div>
 </div>
 
 <!-- Settlement Name Positioning Panel -->
 <div id="label-edit-panel" class="tool-panel">
-  <h3>📍 Position Settlement Names</h3>
-  <p style="color:var(--text-muted);margin:4px 0 8px;line-height:1.5;">
+  <h3 data-i18n="📍 Position Settlement Names">📍 Position Settlement Names</h3>
+  <p style="color:var(--text-muted);margin:4px 0 8px;line-height:1.5;" data-i18n="Click <b>Start</b>, then drag each name to its spot. Each drop auto-saves to your browser. Use <b>Export</b> to bake them into the data files." data-i18n-html="Click <b>Start</b>, then drag each name to its spot. Each drop auto-saves to your browser. Use <b>Export</b> to bake them into the data files.">
     Click <b>Start</b>, then drag each name to its spot. Each drop auto-saves to your
     browser. Use <b>Export</b> to bake them into the data files.
   </p>
   <button id="label-edit-toggle" class="btn btn-secondary" style="width:100%;margin-bottom:8px;" onclick="labelEditToggle()">✥ Start Editing</button>
   <div class="cal-actions">
-    <button class="btn btn-secondary" onclick="labelEditReset()">↺ Reset</button>
-    <button class="btn btn-secondary" onclick="labelEditExport()">💾 Export</button>
-    <button class="btn btn-primary" onclick="labelEditClose()">✓ Done</button>
+    <button class="btn btn-secondary" onclick="labelEditReset()" data-i18n="↺ Reset">↺ Reset</button>
+    <button class="btn btn-secondary" onclick="labelEditExport()" data-i18n="💾 Export">💾 Export</button>
+    <button class="btn btn-primary" onclick="labelEditClose()" data-i18n="✓ Done">✓ Done</button>
   </div>
 </div>
 
 <!-- Marker Edit Panel -->
 <div id="marker-edit-panel" class="tool-panel">
-  <h3>✏️ Edit Markers</h3>
-  <p style="color:var(--text-muted);margin:4px 0 8px;line-height:1.5;">
+  <h3 data-i18n="✏️ Edit Markers">✏️ Edit Markers</h3>
+  <p style="color:var(--text-muted);margin:4px 0 8px;line-height:1.5;" data-i18n="Click <b>Start</b>, then click any marker to <b>rename</b> or <b>delete</b> it. <b>Save to data/</b> writes the changes straight into the data files (Chrome/Edge over localhost), or <b>Download</b> the files to move in manually." data-i18n-html="Click <b>Start</b>, then click any marker to <b>rename</b> or <b>delete</b> it. <b>Save to data/</b> writes the changes straight into the data files (Chrome/Edge over localhost), or <b>Download</b> the files to move in manually.">
     Click <b>Start</b>, then click any marker to <b>rename</b> or <b>delete</b> it.
     <b>Save to data/</b> writes the changes straight into the data files (Chrome/Edge
     over localhost), or <b>Download</b> the files to move in manually.
   </p>
   <button id="marker-edit-toggle" class="btn btn-secondary" style="width:100%;margin-bottom:8px;" onclick="markerEditToggle()">✥ Start Editing</button>
   <div id="marker-edit-status" class="me-status">No unsaved changes</div>
-  <button class="btn btn-primary" style="width:100%;margin-bottom:6px;" onclick="markerEditSaveToData()">💾 Save changes to data/ folder</button>
+  <button class="btn btn-primary" style="width:100%;margin-bottom:6px;" onclick="markerEditSaveToData()" data-i18n="💾 Save changes to data/ folder">💾 Save changes to data/ folder</button>
   <div style="border-top:1px solid rgba(255,255,255,0.08);margin:10px 0 8px;padding-top:8px;">
-    <p style="color:var(--text-muted);margin:0 0 6px;line-height:1.5;font-size:12px;">
+    <p style="color:var(--text-muted);margin:0 0 6px;line-height:1.5;font-size:12px;" data-i18n="<b>Embed My Markers</b> bakes the markers you added by right-clicking into the database for this region — turning your in-game finds into permanent, shareable POIs." data-i18n-html="<b>Embed My Markers</b> bakes the markers you added by right-clicking into the database for this region — turning your in-game finds into permanent, shareable POIs.">
       <b>Embed My Markers</b> bakes the markers you added by right-clicking into the
       database for this region — turning your in-game finds into permanent, shareable POIs.
     </p>
     <div id="promote-status" class="me-status">No custom markers</div>
-    <button class="btn btn-primary" style="width:100%;" onclick="promoteUserMarkers()">⬆ Embed My Markers into data/</button>
+    <button class="btn btn-primary" style="width:100%;" onclick="promoteUserMarkers()" data-i18n="⬆ Embed My Markers into data/">⬆ Embed My Markers into data/</button>
   </div>
   <div class="cal-actions">
-    <button class="btn btn-secondary" onclick="markerEditReset()">↺ Reset</button>
-    <button class="btn btn-secondary" onclick="markerEditExport()">⤓ Download</button>
-    <button class="btn btn-secondary" onclick="markerEditClose()">✓ Done</button>
+    <button class="btn btn-secondary" onclick="markerEditReset()" data-i18n="↺ Reset">↺ Reset</button>
+    <button class="btn btn-secondary" onclick="markerEditExport()" data-i18n="⤓ Download">⤓ Download</button>
+    <button class="btn btn-secondary" onclick="markerEditClose()" data-i18n="✓ Done">✓ Done</button>
   </div>
 </div>
 
 <!-- Local Map Calibration Panel -->
 <div id="calibration-panel" class="tool-panel">
-  <h3>🗺️ Calibrate Local Map</h3>
+  <h3 data-i18n="🗺️ Calibrate Local Map">🗺️ Calibrate Local Map</h3>
   <div class="cal-row">
-    <label>Map</label>
+    <label data-i18n="Map">Map</label>
     <select id="cal-select" onchange="calSelectMap(this.value)" style="flex:1;padding:4px;background:var(--bg-dark);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:12px;">
-      <option value="">— Select —</option>
+      <option value="" data-i18n="— Select —">— Select —</option>
     </select>
   </div>
   <div class="cal-row">
-    <label>Opacity</label>
+    <label data-i18n="Opacity">Opacity</label>
     <input type="range" id="cal-opacity" min="0" max="100" value="60" oninput="calUpdateOpacity(this.value)">
     <span id="cal-opacity-val">60%</span>
   </div>
   <div class="cal-row">
-    <label>Scale %</label>
+    <label data-i18n="Scale %">Scale %</label>
     <input type="number" id="cal-scale" value="100" min="10" max="500" step="5" onchange="calApplyScale(this.value)" style="width:70px;padding:4px;background:var(--bg-dark);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:12px;">
-    <button class="btn btn-secondary" onclick="calApplyScale(document.getElementById('cal-scale').value)" style="padding:4px 8px;font-size:11px;">Apply</button>
+    <button class="btn btn-secondary" onclick="calApplyScale(document.getElementById('cal-scale').value)" style="padding:4px 8px;font-size:11px;" data-i18n="Apply">Apply</button>
   </div>
-  <p style="color:var(--text-muted);margin:6px 0;">Drag the overlay to move it. Adjust scale % to resize.</p>
+  <p style="color:var(--text-muted);margin:6px 0;" data-i18n="Drag the overlay to move it. Adjust scale % to resize.">Drag the overlay to move it. Adjust scale % to resize.</p>
   <div class="cal-bounds" id="cal-bounds">Select a map to calibrate</div>
   <div class="cal-actions">
-    <button class="btn btn-secondary" onclick="calCopyBounds()">📋 Copy Bounds</button>
-    <button class="btn btn-secondary" onclick="calExportConfig()">💾 Export Config</button>
-    <button class="btn btn-primary" onclick="calClose()">✓ Done</button>
+    <button class="btn btn-secondary" onclick="calCopyBounds()" data-i18n="📋 Copy Bounds">📋 Copy Bounds</button>
+    <button class="btn btn-secondary" onclick="calExportConfig()" data-i18n="💾 Export Config">💾 Export Config</button>
+    <button class="btn btn-primary" onclick="calClose()" data-i18n="✓ Done">✓ Done</button>
   </div>
 </div>
 
@@ -408,21 +407,24 @@
      order preserved. The whole-game completion bar needs BOTH regions' totals up
      front, and these are also the file:// fallback, so we keep loading both — just
      no longer render-blocking. -->
-<script defer src="data/markers_trosky.js?v=2026-09-05"></script>
-<script defer src="data/markers_kuttenberg.js?v=2026-09-05"></script>
-<script defer src="data/icon_map.js?v=2026-09-05"></script>
-<script defer src="data/settlement_labels.js?v=2026-09-05"></script>
-<script defer src="data/local_maps.js?v=2026-09-05"></script>
+<script defer src="data/markers_trosky.js?v=2026-09-18"></script>
+<script defer src="data/markers_kuttenberg.js?v=2026-09-18"></script>
+<script defer src="data/icon_map.js?v=2026-09-18"></script>
+<script defer src="data/settlement_labels.js?v=2026-09-18"></script>
+<script defer src="data/local_maps.js?v=2026-09-18"></script>
+<script defer src="data/quest_names_cs.js?v=2026-09-18"></script>
+<script defer src="data/settlement_names_cs.js?v=2026-09-18"></script>
+<script defer src="data/ui_strings_cs.js?v=2026-09-18"></script>
 <!-- app split into domain scripts; load order matters (shared global scope) -->
-<script defer src="js/config.js?v=2026-09-05"></script>
-<script defer src="js/map.js?v=2026-09-05"></script>
-<script defer src="js/markers.js?v=2026-09-05"></script>
-<script defer src="js/sidebar.js?v=2026-09-05"></script>
-<script defer src="js/user-markers.js?v=2026-09-05"></script>
-<script defer src="js/import-export.js?v=2026-09-05"></script>
-<script defer src="js/local-maps.js?v=2026-09-05"></script>
-<script defer src="js/labels.js?v=2026-09-05"></script>
-<script defer src="js/storage.js?v=2026-09-05"></script>
-<script defer src="js/main.js?v=2026-09-05"></script>
+<script defer src="js/config.js?v=2026-09-18"></script>
+<script defer src="js/map.js?v=2026-09-18"></script>
+<script defer src="js/markers.js?v=2026-09-18"></script>
+<script defer src="js/sidebar.js?v=2026-09-18"></script>
+<script defer src="js/user-markers.js?v=2026-09-18"></script>
+<script defer src="js/import-export.js?v=2026-09-18"></script>
+<script defer src="js/local-maps.js?v=2026-09-18"></script>
+<script defer src="js/labels.js?v=2026-09-18"></script>
+<script defer src="js/storage.js?v=2026-09-18"></script>
+<script defer src="js/main.js?v=2026-09-18"></script>
 </body>
 </html>

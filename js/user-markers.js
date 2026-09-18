@@ -29,33 +29,33 @@ function onRightClick(e) {
   // Pre-fill the dropdown with the last-used category ('' = generic Custom).
   const preCat = categoriesById[lastUserMarkerCategory];
   const preIconSrc = (window.ICON_MAP || {})[lastUserMarkerCategory] || '';
-  const preLabel = preCat ? preCat.name : 'Custom';
+  const preLabel = preCat ? preCat.name : tr('Custom');
   const preIconHtml = preIconSrc
     ? `<img src="${preIconSrc}" style="width:20px;height:20px;image-rendering:pixelated">`
     : `<span style="width:20px;text-align:center">${preCat ? (preCat.icon || '📦') : '📌'}</span>`;
 
   const formHtml = `
     <div class="marker-form">
-      <h3>Add Marker</h3>
-      <label>Name</label>
-      <input type="text" id="new-marker-name" placeholder="Enter name..." autofocus
+      <h3>${tr('Add Marker')}</h3>
+      <label>${tr('Name')}</label>
+      <input type="text" id="new-marker-name" placeholder="${tr('Enter name...')}" autofocus
         onkeydown="if(event.key==='Enter'){event.preventDefault();saveNewMarker(${x}, ${y});}">
-      <label>Category</label>
+      <label>${tr('Category')}</label>
       <input type="hidden" id="new-marker-cat" value="${preCat ? escapeHtml(lastUserMarkerCategory) : ''}">
       <div class="icon-dropdown" id="cat-dropdown">
         <div class="icon-dropdown-btn" onclick="toggleCatDropdown()">
           ${preIconHtml} <span id="cat-dropdown-label">${escapeHtml(preLabel)}</span>
         </div>
         <div class="icon-dropdown-list" id="cat-dropdown-list">
-          <input type="text" class="icon-dropdown-search" id="cat-search" placeholder="Search..." oninput="filterCatDropdown(this.value)">
+          <input type="text" class="icon-dropdown-search" id="cat-search" placeholder="${tr('Search...')}" oninput="filterCatDropdown(this.value)">
           <div id="cat-dropdown-items">${catItems}</div>
         </div>
       </div>
-      <label>Description</label>
-      <textarea id="new-marker-desc" placeholder="Optional description..."></textarea>
+      <label>${tr('Description')}</label>
+      <textarea id="new-marker-desc" placeholder="${tr('Optional description...')}"></textarea>
       <div class="form-actions">
-        <button class="btn btn-cancel" onclick="cancelNewMarker()">Cancel</button>
-        <button class="btn btn-save" onclick="saveNewMarker(${x}, ${y})">Save</button>
+        <button class="btn btn-cancel" onclick="cancelNewMarker()">${tr('Cancel')}</button>
+        <button class="btn btn-save" onclick="saveNewMarker(${x}, ${y})">${tr('Save')}</button>
       </div>
     </div>
   `;
@@ -176,7 +176,7 @@ function saveNewMarker(x, y) {
   addUserMarkerToMap(markerData);
   renderMyMarkersList();
   updatePromoteStatus();
-  showToast(`Marker "${name}" added`);
+  showToast(tf('Marker "{0}" added', name));
 }
 
 function cancelNewMarker() {
@@ -195,7 +195,7 @@ function deleteUserMarker(id) {
 
   renderMyMarkersList();
   updatePromoteStatus();
-  showToast('Marker removed');
+  showToast(tr('Marker removed'));
 }
 
 function editUserMarker(id) {
@@ -214,7 +214,7 @@ function editUserMarker(id) {
   const iconMap = window.ICON_MAP || {};
   const currentCat = categoriesById[markerData.category];
   const currentIconSrc = iconMap[markerData.category] || '';
-  const currentCatName = currentCat ? currentCat.name : 'Custom';
+  const currentCatName = currentCat ? currentCat.name : tr('Custom');
   const currentIconHtml = currentIconSrc
     ? `<img src="${currentIconSrc}" style="width:20px;height:20px;image-rendering:pixelated">`
     : `<span style="width:20px;text-align:center">${currentCat?.icon || '📌'}</span>`;
@@ -223,26 +223,26 @@ function editUserMarker(id) {
 
   const editHtml = `
     <div class="marker-form">
-      <h3>Edit Marker</h3>
-      <label>Name</label>
+      <h3>${tr('Edit Marker')}</h3>
+      <label>${tr('Name')}</label>
       <input type="text" id="edit-marker-name" value="${escapeHtml(markerData.name)}"
         onkeydown="if(event.key==='Enter'){event.preventDefault();saveEditedMarker(${id});}">
-      <label>Category</label>
+      <label>${tr('Category')}</label>
       <input type="hidden" id="new-marker-cat" value="${markerData.category}">
       <div class="icon-dropdown" id="cat-dropdown">
         <div class="icon-dropdown-btn" onclick="toggleCatDropdown()">
           ${currentIconHtml} <span id="cat-dropdown-label">${currentCatName}</span>
         </div>
         <div class="icon-dropdown-list" id="cat-dropdown-list">
-          <input type="text" class="icon-dropdown-search" id="cat-search" placeholder="Search..." oninput="filterCatDropdown(this.value)">
+          <input type="text" class="icon-dropdown-search" id="cat-search" placeholder="${tr('Search...')}" oninput="filterCatDropdown(this.value)">
           <div id="cat-dropdown-items">${catItems}</div>
         </div>
       </div>
-      <label>Description</label>
+      <label>${tr('Description')}</label>
       <textarea id="edit-marker-desc">${escapeHtml(markerData.description)}</textarea>
       <div class="form-actions">
-        <button class="btn btn-cancel" onclick="cancelEditMarker(${id})">Cancel</button>
-        <button class="btn btn-save" onclick="saveEditedMarker(${id})">Save</button>
+        <button class="btn btn-cancel" onclick="cancelEditMarker(${id})">${tr('Cancel')}</button>
+        <button class="btn btn-save" onclick="saveEditedMarker(${id})">${tr('Save')}</button>
       </div>
     </div>
   `;
@@ -293,7 +293,7 @@ function saveEditedMarker(id) {
 
   addUserMarkerToMap(markerData);
   renderMyMarkersList();
-  showToast('Marker updated');
+  showToast(tr('Marker updated'));
 }
 
 function cancelEditMarker(id) {
@@ -371,7 +371,7 @@ function renderMyMarkersList() {
   const all = userMarkers[currentRegion] || [];
 
   if (all.length === 0) {
-    list.innerHTML = '<div class="no-markers">Right-click on the map to add a custom marker.</div>';
+    list.innerHTML = `<div class="no-markers">${tr('Right-click on the map to add a custom marker.')}</div>`;
     return;
   }
 
@@ -397,17 +397,17 @@ function renderMyMarkersList() {
           <div class="mm-name">${escapeHtml(m.name)}</div>
           <div class="mm-coords">X: ${m.x} Y: ${m.y}</div>
         </div>
-        <button class="mm-edit" onclick="event.stopPropagation();editUserMarker(${m.id})" title="Edit">✎</button>
-        <button class="mm-delete" onclick="event.stopPropagation();showConfirm('Delete this marker?',{title:'Delete marker',confirmText:'Delete',danger:true}).then(ok=>ok&&deleteUserMarker(${m.id}))" title="Delete">✕</button>
+        <button class="mm-edit" onclick="event.stopPropagation();editUserMarker(${m.id})" title="${tr('Edit')}">✎</button>
+        <button class="mm-delete" onclick="event.stopPropagation();showConfirm(tr('Delete this marker?'),{title:tr('Delete marker'),confirmText:tr('Delete'),danger:true}).then(ok=>ok&&deleteUserMarker(${m.id}))" title="${tr('Delete')}">✕</button>
       </div>
     `;
   }).join('');
 
   const controlsHtml = all.length > MM_CONTROLS_THRESHOLD ? `
     <div class="mm-controls">
-      <input type="text" class="mm-search" id="mm-search" placeholder="Filter markers..." value="${escapeHtml(myMarkersFilter)}" oninput="filterMyMarkers(this.value)">
+      <input type="text" class="mm-search" id="mm-search" placeholder="${tr('Filter markers...')}" value="${escapeHtml(myMarkersFilter)}" oninput="filterMyMarkers(this.value)">
       <select class="mm-sort" onchange="setMyMarkersSort(this.value)">
-        <option value="recent"${myMarkersSort === 'recent' ? ' selected' : ''}>Recent</option>
+        <option value="recent"${myMarkersSort === 'recent' ? ' selected' : ''}>${tr('Recent')}</option>
         <option value="name"${myMarkersSort === 'name' ? ' selected' : ''}>A–Z</option>
       </select>
     </div>` : '';
@@ -417,11 +417,11 @@ function renderMyMarkersList() {
   const otherCount = (userMarkers[other] || []).length;
   const otherName = other.charAt(0).toUpperCase() + other.slice(1);
   const otherHtml = otherCount
-    ? `<div class="mm-other-region">↔ ${otherCount} marker${otherCount > 1 ? 's' : ''} in ${otherName} — switch region to view</div>`
+    ? `<div class="mm-other-region">↔ ${tf('{0} in {1} — switch region to view', `${otherCount} marker${otherCount > 1 ? 's' : ''}`, otherName)}</div>`
     : '';
 
   list.innerHTML = controlsHtml + rowsHtml +
-    '<div class="no-markers" id="mm-no-match" style="display:none">No markers match your filter.</div>' +
+    `<div class="no-markers" id="mm-no-match" style="display:none">${tr('No markers match your filter.')}</div>` +
     otherHtml;
 
   if (myMarkersFilter.trim()) filterMyMarkers(myMarkersFilter);
