@@ -7,7 +7,7 @@ window.SETTLEMENT_NAME_CS = {
   // Trosky
   "Apollonia": "Apolena",
   "Nebakov Fortress": "Nebákov",
-  "Nomads' Camp": "Tábor kočovníků",
+  "Nomads' Camp": "Kočovnický tábor",
   "Semine": "Semín",
   "Tachov": "Tachov",
   "Troskowitz": "Troskovice",

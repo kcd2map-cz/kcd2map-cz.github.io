@@ -68,6 +68,15 @@ function switchLang(lang) {
   const searchInput = document.getElementById('search-input');
   if (searchInput && searchInput.value) onSearchInput(searchInput.value);
 
+  // The category list + open icon legend show localized group/category names —
+  // repaint them. Guarded: categories only exist once loadRegion has run (init
+  // calls switchLang before that; loadRegion then renders the list in the right
+  // language itself).
+  if (categories && categories.length && typeof renderCategoryList === 'function') {
+    renderCategoryList(searchInput ? searchInput.value : '');
+    if (legendOpen && typeof renderLegend === 'function') renderLegend();
+  }
+
   // Refresh dynamic panels that embed language-specific strings.
   if (typeof renderMyMarkersList === 'function') renderMyMarkersList();
   if (typeof updateMarkerEditStatus === 'function') updateMarkerEditStatus();
@@ -85,8 +94,9 @@ function switchLang(lang) {
 // comma-separated data-i18n-attr attributes (e.g. title,aria-label) are sourced
 // from the ORIGINAL English value (cached on the element) — so en↔cs toggling
 // never re-translates an already-translated attribute and sticks.
-// The sidebar "which markers to show" category list is NOT marked up, so it
-// intentionally stays in English (marker data is English by design).
+// The sidebar "which markers to show" category list and the icon legend are not
+// marked up with data-i18n — their localized group/category names are repainted
+// in switchLang instead.
 function applyTranslations() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;

@@ -4,8 +4,11 @@
 //
 // NOT translated here on purpose:
 //  - marker names on the map (only quest_main names switch, see quest_names_cs.js)
-//  - the sidebar category list (groups + category names stay English)
 //  - settlement names (they switch too, but via settlement_names_cs.js)
+// The sidebar category list (group + category names) and the icon legend ARE
+// translated below — each key is the exact English name from js/config.js
+// (CATEGORY_GROUPS) or data/markers_*.js. Group names stay English internally
+// (collapse state, onclick/aria keys); only the displayed text goes through tr().
 window.UI_CS = {
   // ── Global / chrome ──
   "Storage full — change not saved": "Úložiště je plné — změna nebyla uložena",
@@ -216,4 +219,146 @@ window.UI_CS = {
   "{0} / {1} main quests": "{0} / {1} hlavních úkolů",
   "{0} unsaved change ({1})": "{0} neuložená změna ({1})",
   "{0} unsaved changes ({1})": "{0} neuložených změn ({1})",
+
+  // ── Legend & marker selector: category groups ──
+  "Armour": "Zbroj",
+  "Books": "Knihy",
+  "Food": "Jídlo",
+  "Materials": "Materiály",
+  "NPCs": "NPC",
+  "Poisons": "Jedy",
+  "Potions": "Lektvary",
+  "Quests": "Questy",
+  "Tack": "Výstroj na Koně",
+  "Weapons": "Zbraně",
+  "Points of Interest": "Zajímavá místa",
+  "Other": "Ostatní",
+  "Toggle all {0}": "Přepnout vše: {0}",
+
+  // ── Legend & marker selector: categories ──
+  // Quests
+  "Main Quest": "Hlavní Quest",
+  "Side Quest": "Vedlejší Quest",
+  "Task / Activity": "Aktivita",
+  // DLC questlines (official Czech titles where confirmed; Latin/subtitle kept)
+  "Brushes with Death": "Barvy smrti", 
+  "Legacy of the Forge": "Odkaz kovárny", 
+
+  // NPCs / merchants
+  "Apothecary": "Aptikář",
+  "Armourer": "Platnéř",
+  "Baker": "Pekař",
+  "Baker / Bakery": "Pekař",
+  "Barber": "Holič",
+  "Bathhouse": "Lázně",
+  "Blacksmith": "Kovář",
+  "Butchery": "Řezník",
+  "Cobbler": "Švec",
+  "Fisherman": "Rybář",
+  "Grocer": "Kupec",
+  "Gunsmith": "Puškař",
+  "Herbalist": "Bylinář",
+  "Horse Trader": "Koňský handléř",
+  "Huntsman": "Lovec",
+  "Inn": "Hostinec",
+  "Lodgings": "Hostinec s ubytováním",
+  "Miller": "Mlinář",
+  "Saddler": "Sedlář",
+  "Scribe": "Písař",
+  "Shield Painter": "Malíř štítů",
+  "Skill Teacher": "Učitel dovedností",
+  "Smithy": "Kovárna",
+  "Tailor": "Krejčí",
+  "Tanner": "Koželouh",
+  "Tavern": "Hospoda",
+  "Trader / Shop": "Kupec",
+  "Weaponsmith": "Zbrojíř",
+
+  // Points of interest
+  "Alchemy Bench": "Alchymistický stůl",
+  "Archery Range": "Lukostřelnice",
+  "Beehive": "Úl",
+  "Camp": "Tábor",
+  "Cart Stash": "Vozová skrýš",
+  "Combat Arena": "Kobyliště",
+  "Conc Cross": "Smírčí kříž",
+  "Dice Table": "Stůl na kostky",
+  "Dog": "Pes",
+  "Drying Rack": "Sušírna",
+  "Enemy Camp": "Tábor banditů",
+  "Fast Travel": "Rychlé cestování",
+  "Fist Fight Arena": "Aréna pěstních soubojů",
+  "Grave": "Hrob",
+  "Home": "Domov",
+  "Hunting Spot (Boar)": "Loviště divočáků",
+  "Hunting Spot (Deer)": "Loviště jelenů",
+  "Hunting Spot (Roe Deer)": "Loviště srnčí zvěře",
+  "Hunting Spot (Wolf)": "Loviště vlků",
+  "Indulgence Box": "Truhla na odpustky",
+  "Interesting Site": "Zajímavost",
+  "Level Transition": "Převozník",
+  "Lootable Corpse": "Mrtvola",
+  "Nest": "Hnízdo",
+  "Player Bed": "Postel",
+  "Selling Chest": "Prodejní truhla",
+  "Sharpening Wheel": "Brusné kolo",
+  "Shrine": "Boží muka",
+  "Smokehouse": "Udírna",
+  "Underground Entrance": "Vchod do podzemí",
+  "Unknown": "Neznámé",
+  "Washing": "Místo na praní prádla",
+  "Woodland Garden": "Lesní zahrada",
+
+  // Armor
+  "Arm Armour": "Zbroj na paže",
+  "Armour Belt": "Opasek",
+  "Belt": "Pásek",
+  "Body Armour": "Zbroj na tělo",
+  "Head Armour": "Zbroj na hlavu",
+  "Jewellery": "Šperky",
+  "Leg Armour": "Zbroj na nohy",
+  "Armour Pouch": "Tašavice",
+  "Pouch": "Tašavice",
+
+  // Books
+  "Letter": "Dopis",
+  "Lore Book": "Kniha pověstí",
+  "Treasure Map": "Mapa k pokladu",
+  "Recipe": "Recept",
+  "Skill Book": "Kniha dovedností",
+
+  // Food
+  // ("Food" → "Jídlo" is defined above under the category groups; the loot Food
+  // category shares the same English string, so no second key is needed.)
+
+  // Materials
+  "Alchemy Material": "Alchymistický materiál",
+  "Blacksmithing Material": "Kovářský materiál",
+  "Herb": "Bylina",
+
+  // Poisons / Potions
+  "Poison": "Jed",
+  "Potion": "Lektvar",
+
+  // Weapons
+  "Ammo / Arrows": "Střelivo / šípy",
+  "Bow": "Luk",
+  "Dagger": "Dýka",
+  "Heavy Weapon": "Těžká zbraň",
+  "Polearm": "Dřevcová zbraň",
+  "Shield": "Štít",
+  "Sword": "Meč",
+
+  // Tack
+  "Bridle": "Uzda",
+  "Horse Tack": "Zbroj na koně",
+  "Horseshoe": "Podkova",
+  "Saddle": "Sedlo",
+
+  // Misc loot
+  "Dice": "Kostky",
+  "Gambling Badge": "odznak",
+  "Miscellaneous": "Různé",
+  "Usable Item": "Použitelný předmět",
+  "Utility Kit": "Sada nástrojů",
 };

@@ -202,9 +202,9 @@ function poiPopupHtml(markerData, cat, markerKey, btnId, doneLabel, undoneLabel)
   if (markerEditing) {
     const safeName = escapeHtml(markerData.name);
     const catOptions = [...categories].sort((a, b) => a.name.localeCompare(b.name))
-      .map(c => `<option value="${c.id}"${c.id === markerData.category ? ' selected' : ''}>${escapeHtml(c.name)}</option>`)
+      .map(c => `<option value="${c.id}"${c.id === markerData.category ? ' selected' : ''}>${escapeHtml(tr(c.name))}</option>`)
       .join('');
-    return `<div class="popup-category">${cat.name}</div>
+    return `<div class="popup-category">${tr(cat.name)}</div>
       <div class="marker-form" style="min-width:210px;">
         <label>${tr('Marker name')}</label>
         <input type="text" id="poi-edit-name" value="${safeName}">
@@ -220,7 +220,7 @@ function poiPopupHtml(markerData, cat, markerKey, btnId, doneLabel, undoneLabel)
   }
   const discovered = isMarkerDiscovered(markerData);
   return `<div class="popup-title">${escapeHtml(localizedMarkerName(markerData))}</div>
-    <div class="popup-category">${cat.name}</div>
+    <div class="popup-category">${tr(cat.name)}</div>
     ${markerData.description ? `<div class="popup-desc">${escapeHtml(markerData.description)}</div>` : ''}
     <div class="popup-coords">X: ${markerData.x} &nbsp; Y: ${markerData.y}</div>
     <button class="popup-progress-btn${discovered ? ' completed' : ''}" id="${btnId}"
@@ -589,7 +589,7 @@ function buildUserMarkerPopup(markerData) {
   const discovered = isMarkerDiscovered(markerData);
   return `
     <div class="popup-title">${escapeHtml(markerData.name) || tr('Custom Marker')}</div>
-    <div class="popup-category">${cat ? cat.name : tr('Custom')} — ${tr('User Marker')}</div>
+    <div class="popup-category">${cat ? tr(cat.name) : tr('Custom')} — ${tr('User Marker')}</div>
     ${markerData.description ? `<div class="popup-desc">${escapeHtml(markerData.description)}</div>` : ''}
     <div class="popup-coords">X: ${markerData.x} &nbsp; Y: ${markerData.y}</div>
     <button class="popup-progress-btn${discovered ? ' completed' : ''}" id="${btnId}"

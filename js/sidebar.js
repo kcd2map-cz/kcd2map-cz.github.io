@@ -71,8 +71,8 @@ function renderCategoryGroupHtml(groupName, cats, counts, expanded, toggleAllAtt
   let html = `<div class="cat-group">`;
   html += `<div class="cat-group-header ${cls}" tabindex="0" role="button" aria-expanded="${expanded}" onclick="toggleGroup('${groupName}')">`;
   html += `  <span class="group-arrow">▶</span>`;
-  html += `  <span class="group-name">${groupName}</span>`;
-  html += `  <button class="group-toggle-all switch${activeCount === cats.length ? ' on' : ''}" aria-label="Toggle all ${groupName}" onclick="event.stopPropagation();${toggleAllAttr(activeCount < cats.length)}"></button>`;
+  html += `  <span class="group-name">${tr(groupName)}</span>`;
+  html += `  <button class="group-toggle-all switch${activeCount === cats.length ? ' on' : ''}" aria-label="${tf('Toggle all {0}', tr(groupName))}" onclick="event.stopPropagation();${toggleAllAttr(activeCount < cats.length)}"></button>`;
   html += `</div>`;
   html += `<div class="cat-group-children ${cls}">`;
   cats.forEach(cat => {
@@ -87,9 +87,9 @@ function renderCategoryGroupHtml(groupName, cats, counts, expanded, toggleAllAtt
       ? `<span class="cat-progress"><span class="done">${dcount}</span>/${count}</span>`
       : `<span class="cat-progress">${count}</span>`;
     html += `
-      <div class="category-item ${active ? 'active' : ''}" tabindex="0" role="switch" aria-checked="${active}" aria-label="${escapeHtml(cat.name)}" onclick="toggleCategory('${cat.id}', this)">
+      <div class="category-item ${active ? 'active' : ''}" tabindex="0" role="switch" aria-checked="${active}" aria-label="${escapeHtml(tr(cat.name))}" onclick="toggleCategory('${cat.id}', this)">
         <span class="cat-icon">${iconHtml}</span>
-        <span class="cat-name">${cat.name}</span>
+        <span class="cat-name">${tr(cat.name)}</span>
         ${statsHtml}
         <span class="cat-toggle switch"></span>
       </div>`;
@@ -178,13 +178,13 @@ function renderLegend() {
     const color = GROUP_COLORS[g.name] || DEFAULT_GROUP_COLOR;
     const cats = g.categories.map(id => categoriesById[id]).filter(Boolean);
     if (!cats.length) return;
-    html += `<div class="legend-group-title" style="color:${color}">${g.name}</div>`;
+    html += `<div class="legend-group-title" style="color:${color}">${tr(g.name)}</div>`;
     cats.forEach(c => {
       const src = iconMap[c.id];
       const ic = src
         ? `<img src="${src}" onerror="this.style.display='none'">`
         : `<span style="width:18px;text-align:center">${c.icon || '📌'}</span>`;
-      html += `<div class="legend-row">${ic}<span>${c.name}</span></div>`;
+      html += `<div class="legend-row">${ic}<span>${tr(c.name)}</span></div>`;
     });
   });
   document.getElementById('legend-content').innerHTML = html;
@@ -320,7 +320,7 @@ function onSearchInput(query) {
     const iconHtml = iconSrc
       ? `<img src="${iconSrc}" onerror="this.style.display='none'">`
       : `<span style="width:18px;text-align:center;font-size:12px">${cat?.icon || '📌'}</span>`;
-    const catName = cat ? cat.name : 'Custom';
+    const catName = cat ? tr(cat.name) : 'Custom';
     const tag = m.source === 'user' ? tr(' (mine)') : '';
     return `<div class="search-result-item" role="option" onclick="searchResultClick(${m.x}, ${m.y}, '${getMarkerKey(m)}')">
       ${iconHtml}
