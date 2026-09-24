@@ -27,13 +27,25 @@ function createMarkerIcon(emoji, color, size = 28, categoryId = '', glowColor = 
   });
 }
 
-// Display name for a POI marker. Main-story quests (§ quest_main) show their
-// Czech name when the map language is Čeština — the stored data stays English so
-// edits, exports and the quests-en.txt/quests-cz.txt pairing never drift.
-// Falls back to the stored name (e.g. user-renamed markers, unknown quests).
+// Display name for a POI marker. In Čeština the stored English name swaps to its
+// Czech counterpart through the translation maps, in order: main-story quests
+// (quest_main → quest_names_cs.js), settlement names (settlement_names_cs.js),
+// then every other marker (marker_names_cs.js). The stored data stays English so
+// edits, exports and the *_en.txt/*_cz.txt pairings never drift. Falls back to
+// the stored name (e.g. user-renamed markers, untranslated names).
 function localizedMarkerName(m) {
-  if (m && currentLang === 'cs' && m.category === 'quest_main' && window.QUEST_NAME_CS) {
-    return window.QUEST_NAME_CS[m.name] || m.name;
+  if (m && currentLang === 'cs') {
+    const name = m.name;
+    if (m.category === 'quest_main' && window.QUEST_NAME_CS && Object.prototype.hasOwnProperty.call(window.QUEST_NAME_CS, name)) {
+      const cz = window.QUEST_NAME_CS[name];
+      if (cz) return cz;
+    }
+    if (window.SETTLEMENT_NAME_CS && Object.prototype.hasOwnProperty.call(window.SETTLEMENT_NAME_CS, name)) {
+      return window.SETTLEMENT_NAME_CS[name];
+    }
+    if (window.MARKER_NAME_CS && Object.prototype.hasOwnProperty.call(window.MARKER_NAME_CS, name)) {
+      return window.MARKER_NAME_CS[name];
+    }
   }
   return m ? m.name : '';
 }
@@ -97,20 +109,16 @@ function addPoiMarker(markerData) {
   }
 }
 
-// Re-point quest tooltips + the open popup after the language switcher changes —
-// markers live in cached Leaflet layers, so names update in place without a rebuild.
-function refreshQuestMarkerLanguage() {
+// Re-point all marker tooltips after the language switcher changes — markers live
+// in cached Leaflet layers, so names update in place without a rebuild. Open
+// popups are re-rendered separately by switchLang (main.js), which updates any
+// open popup regardless of category.
+function refreshMarkerLanguage() {
   Object.values(markersByKey).forEach(m => {
     const p = m._poi;
-    if (!p || p.category !== 'quest_main') return;
+    if (!p) return;
     if (m.getTooltip()) m.setTooltipContent(escapeHtml(localizedMarkerName(p)));
   });
-  // The popup content is built lazily (bindPopup fn) — re-evaluate it live so an
-  // open quest popup switches language without being reopened.
-  if (map && map._popup && map._popup.isOpen()) {
-    const src = map._popup._source;
-    if (src && src._poi && src._poi.category === 'quest_main') map._popup.update();
-  }
 }
 
 // Lazily construct the L.markers for one category (P1: don't build all ~1900

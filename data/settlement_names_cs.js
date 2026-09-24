@@ -22,7 +22,7 @@ window.SETTLEMENT_NAME_CS = {
   "Kuttenberg": "Kutná Hora",
   "Maleshov": "Malešov",
   "Miskowitz": "Miskovice",
-  "Old Kutna": "Stará Kutná",
+  "Old Kutna": "Stará Kutna",
   "Opatowitz": "Opatovice",
   "Pschitoky": "Přítoky",
   "Raborsch": "Ratboř",

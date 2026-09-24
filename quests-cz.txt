@@ -1,35 +1,34 @@
 # Trosky Main Story
-Bezstarostná jízda
-Fortuna
-Trosky
-Velký den
-Komu zvoní hrana
-Zpátky v sedle
-Nutné zlo
-Za vítězství
-Posel Páně
-Prst Boží
-Bouře
-
+Bezstarostná jízda -- Jindřich a pan Ptáček cestují směrem k Troskám
+Fortuna -- Zotavování v Boženině chýši
+Trosky -- Otevírá první velké okno úkolů v Troskách (KCD2)
+Velký den -- Vyberte si cestu Radovana nebo Kreyzla, abyste se dostali na svatbu v Semíně
+Komu zvoní hrana -- Časovaná sekvence na hradě bezprostředně po svatbě
+Zpátky v sedle -- Otevírá krátké okno pro úkoly na hradě Trosky a první romanci s Klárou
+Nutné zlo -- Nejlepší bod pro dokončení zbývajícího obsahu Trosek
+Za vítězství -- Varování uvádí do uzamčené sekvence na konci aktu
+Posel Páně -- Krátká změna perspektivy
+Prst Boží -- Pokračuje přímo k regionálnímu finále
+Bouře -- Ukončuje akt Trosky a přesouvá příběh do Kuttenbergu
 
 # Kuttenberg Main Story
-Perem a mečem
-Co Čert nechtěl
-Čertova smečka
-Do podsvětí
-Via Argentum
-Liberté et Fraternité
-Královský gambit
-Večírek
-Exodus
-Jáma Lvová
-Tanec s Čertem
-Oratores
-Loupež po italsku
-Civitas Pragensis
-A kurva...
-V obležení
-Hlad a zmar
-Zúčtování
-Poslední pomazání
-Soudný den
+Perem a mečem -- Zahajuje sekci úkolů v Kuttenbergu
+Co Čert nechtěl -- Stanovuje další cíl hry
+Čertova smečka -- Znovu spojuje spojence a odemyká velké okno úkolů
+Do podsvětí -- Vyšetřování uvnitř Kuttenbergu
+Via Argentum -- Vyšetřování stříbra a mincovny
+Liberté et Fraternité -- Infiltrace Maleshova; zahrnuje snadno přehlédnutelný úkol Rozina knížka
+Královský gambit -- Časovaná sekvence rady; nenechávejte ji čekat
+Večírek -- Pokračování politického oblouku
+Exodus -- Postup příběhu po sekvenci rady
+Jáma Lvová -- Infiltrace v okolí Zikmundova tábora
+Tanec s Čertem -- Vede k závěrečné kampani
+Oratores -- K velkému uzavření úkolů v Kuttenbergu dochází pozdě v tomto úkolu
+Loupež po italsku -- Zahajuje závěrečnou fázi hry
+Civitas Pragensis -- Závěrečná dějová sekvence
+A kurva... -- Příprava na bitvu
+V obležení -- Obléhací sekvence
+Hlad a zmar -- Uzamčený postup v závěru hry
+Zúčtování -- Poslední velká operace před závěrem
+Poslední pomazání -- Závěrečný úkol
+Soudný den -- Poslední hlavní úkol

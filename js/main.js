@@ -61,8 +61,8 @@ function switchLang(lang) {
   document.documentElement.lang = lang;
   applyTranslations();
 
-  // Quest markers show localized names — re-render them plus the open search.
-  if (typeof refreshQuestMarkerLanguage === 'function') refreshQuestMarkerLanguage();
+  // Map markers show localized names — re-render them plus the open search.
+  if (typeof refreshMarkerLanguage === 'function') refreshMarkerLanguage();
   // Settlement (village) names switch language too.
   if (typeof refreshSettlementLabelLanguage === 'function') refreshSettlementLabelLanguage();
   const searchInput = document.getElementById('search-input');

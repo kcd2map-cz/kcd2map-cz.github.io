@@ -3,8 +3,9 @@
 // source of truth (untranslated keys fall back to the English string).
 //
 // NOT translated here on purpose:
-//  - marker names on the map (only quest_main names switch, see quest_names_cs.js)
-//  - settlement names (they switch too, but via settlement_names_cs.js)
+//  - marker names on the map switch via quest_names_cs.js +
+//    marker_names_cs.js (see js/markers.js), not via UI strings
+//  - settlement names switch via settlement_names_cs.js
 // The sidebar category list (group + category names) and the icon legend ARE
 // translated below — each key is the exact English name from js/config.js
 // (CATEGORY_GROUPS) or data/markers_*.js. Group names stay English internally
@@ -357,7 +358,7 @@ window.UI_CS = {
 
   // Misc loot
   "Dice": "Kostky",
-  "Gambling Badge": "odznak",
+  "Gambling Badge": "Odznak",
   "Miscellaneous": "Různé",
   "Usable Item": "Použitelný předmět",
   "Utility Kit": "Sada nástrojů",
