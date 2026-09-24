@@ -255,7 +255,7 @@ window.UI_CS = {
   "Butchery": "Řezník",
   "Cobbler": "Švec",
   "Fisherman": "Rybář",
-  "Grocer": "Kupec",
+  "Grocer": "Zelinář",
   "Gunsmith": "Puškař",
   "Herbalist": "Bylinář",
   "Horse Trader": "Koňský handléř",
