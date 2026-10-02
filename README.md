@@ -2,6 +2,8 @@
 
 An interactive web map for **Kingdom Come: Deliverance II** with two languages czech and english, covering both the Trosky and Kuttenberg regions. Built with [Leaflet.js](https://leafletjs.com/).
 
+This is a fork of [Kingdom Come: Deliverence II Map](https://quangdao215.github.io/kcd2_interactive_map/) by [QuangDao215](https://github.com/QuangDao215/kcd2_interactive_map).
+
 ---
 
 ## Features
@@ -24,8 +26,8 @@ An interactive web map for **Kingdom Come: Deliverance II** with two languages c
 The site is fully static — no build step or server required. But because browsers block `file://` requests, you'll need to serve it through a local HTTP server.
 
 ```bash
-git clone https://github.com/QuangDao215/kcd2_interactive_map.git
-cd kcd2_interactive_map
+git clone https://github.com/kcd2map-cz/kcd2map-cz.github.io.git
+cd kcd2map-cz.github.io
 python -m http.server 8000
 ```
 
@@ -38,7 +40,7 @@ Any other static server works too (Node's `http-server`, VS Code Live Server, et
 ## Project Structure
 
 ```
-kcd2_interactive_map/
+kcd2map-cz.github.io
 ├── index.html               # Page shell + markup
 ├── style.css                # All styles
 ├── js/                      # App logic (ordered classic scripts, shared global scope)
@@ -59,6 +61,7 @@ kcd2_interactive_map/
 - **Game, art, map data, and all in-game assets** © [Warhorse Studios](https://warhorsestudios.cz/). This is an unofficial fan project — not affiliated with or endorsed by Warhorse.
 - **Community marker data** sourced from [gamerguides.com](https://www.gamerguides.com/kingdom-come-deliverance-ii/maps/trosky-region-map) and verified against the [KCD2 Wiki](https://kingdomcomedeliverance2.wiki.fextralife.com/).
 - **Map tiles and icons** extracted from the game files for fan reference. All rights belong to Warhorse.
+- **Original map** by [QuangDao215](https://github.com/QuangDao215/kcd2_interactive_map).
 - **Built with** [Leaflet.js](https://leafletjs.com/).
 
 ---
