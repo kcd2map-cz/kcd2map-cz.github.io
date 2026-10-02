@@ -1,8 +1,6 @@
 # KCD2 Interactive Map
 
-An interactive web map for **Kingdom Come: Deliverance II** in czech, covering both the Trosky and Kuttenberg regions. Built with [Leaflet.js](https://leafletjs.com/).
-
-** It`s not still done.
+An interactive web map for **Kingdom Come: Deliverance II** with two languages czech and english, covering both the Trosky and Kuttenberg regions. Built with [Leaflet.js](https://leafletjs.com/).
 
 ---
 
