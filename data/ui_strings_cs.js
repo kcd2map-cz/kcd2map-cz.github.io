@@ -48,7 +48,7 @@ window.UI_CS = {
   "Info": "Informace",
   "My Markers": "Moje markery",
   "Tools": "Nástroje",
-  "KCD1 Map": "KCD1 mapa",
+  "Kingdom Came: Deliverance I map": "Kingdom Came: Deliverance I mapa",
   "Region": "Oblast",
   "Search markers by name...": "Hledat markery podle názvu…",
   "Search markers by name": "Hledat markery podle názvu",
